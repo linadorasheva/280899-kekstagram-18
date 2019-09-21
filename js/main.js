@@ -4,17 +4,15 @@ var templatePicture = document.querySelector('#picture').content;
 var fragment = document.createDocumentFragment();
 
 var mockComments = [
-'Всё отлично!',
-'В целом всё неплохо. Но не всё.',
-'Когда  вы  делаете  фотографию,  хорошо  бы  убирать  палец  из кадра. В конце концов это просто непрофессионально.',
-'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда  вы  делаете  фотографию,  хорошо  бы  убирать  палец  из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
 var quantityObjects = 25;
-var minUrl = 1;
-var maxUrl = 25;
 var minLikes = 15;
 var maxLikes = 200;
 var minComments = 1;
@@ -31,7 +29,7 @@ var getRandomArrElement = function (arr) {
 };
 
 // Функция, возвращающая случайное число
-var getRandomInteger = function(min, max) {
+var getRandomInteger = function (min, max) {
   var randomInteger = min - 0.5 + Math.random() * (max - min + 1);
   randomInteger = Math.round(randomInteger);
   return randomInteger;
@@ -47,8 +45,8 @@ var getPictures = function (quantity) {
       likes: getRandomInteger(minLikes, maxLikes),
       comments: getRandomArrElement(mockComments),
       quantityComments: getRandomInteger(minComments, maxComments)
-    }
-  };
+    };
+  }
   return pictures;
 };
 
