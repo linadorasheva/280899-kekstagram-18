@@ -24,7 +24,9 @@ var QUANTITY_OBJECTS = 25;
 var MIN_LIKES = 15;
 var MAX_LIKES = 200;
 var MIN_COMMENTS = 1;
-var MAX_COMMENTS = 5;
+var MAX_COMMENTS = 10;
+var MIN_PHOTO_AVATAR = 1;
+var MAX_PHOTO_AVATAR = 6;
 
 // Контейнер для фотографий других пользователей
 var picturesBlock = document.querySelector('.pictures');
@@ -44,12 +46,12 @@ var getRandomInteger = function (min, max) {
 };
 
 // Функция, генерирующая текст комментария
-var getString = function () {
-  var messageText = [];
+var getMessage = function () {
+  var messageArray = [];
   for (var i = 0; i < getRandomInteger(1, 2); i++) {
-    messageText[i] = mockComments[getRandomArrElement(mockComments)];
+    messageArray[i] = mockComments[getRandomArrElement(mockComments)];
   }
-  var message = messageText.join(' ');
+  var message = messageArray.join(' ');
   return message;
 };
 
@@ -59,8 +61,8 @@ var getComments = function () {
   var quantityComments = getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
   for (var j = 0; j <= quantityComments; j++) {
     comments[j] = {
-      avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
-      message: getString(),
+      avatar: 'img/avatar-' + getRandomInteger(MIN_PHOTO_AVATAR, MAX_PHOTO_AVATAR) + '.svg',
+      message: getMessage(),
       name: mockNames[getRandomArrElement(mockNames)]
     };
   }
