@@ -1,7 +1,6 @@
 'use strict';
 
 var templatePicture = document.querySelector('#picture').content;
-var fragment = document.createDocumentFragment();
 
 var mockComments = [
   'Всё отлично!',
@@ -96,6 +95,7 @@ var createPicture = function (object) {
 
 // Функция заполнения блока DOM-элементами на основе массива JS-объектов
 var renderPictures = function (array) {
+  var fragment = document.createDocumentFragment();
   for (var i = 0; i < array.length; i++) {
     fragment.appendChild(createPicture(array[i]));
   }
