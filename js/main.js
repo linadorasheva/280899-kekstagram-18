@@ -12,11 +12,20 @@ var mockComments = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-var quantityObjects = 25;
-var minLikes = 15;
-var maxLikes = 200;
-var minComments = 1;
-var maxComments = 10;
+var mockNames = [
+  'Шелдон',
+  'Говард',
+  'Леонард',
+  'Радж',
+  'Стюарт',
+  'Барри'
+];
+
+var QUANTITY_OBJECTS = 25;
+var MIN_LIKES = 15;
+var MAX_LIKES = 200;
+var MIN_COMMENTS = 1;
+var MAX_COMMENTS = 5;
 
 // Контейнер для фотографий других пользователей
 var picturesBlock = document.querySelector('.pictures');
@@ -35,16 +44,40 @@ var getRandomInteger = function (min, max) {
   return randomInteger;
 };
 
-// Функция, возвращающая массив объектов
-var getPictures = function (quantity) {
+// Функция, генерирующая текст комментария
+var getString = function () {
+  var messageText = [];
+  for (var i = 0; i < getRandomInteger(1, 2); i++) {
+    messageText[i] = mockComments[getRandomArrElement(mockComments)];
+  }
+  var message = messageText.join(' ');
+  return message;
+};
+
+// Функция, возвращающая массив объектов-комментариев к фото
+var getComments = function () {
+  var comments = [];
+  var quantityComments = getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
+  for (var j = 0; j <= quantityComments; j++) {
+    comments[j] = {
+      avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
+      message: getString(),
+      name: mockNames[getRandomArrElement(mockNames)]
+    };
+  }
+  return comments;
+};
+
+// Функция, возвращающая массив объектов-фотографий
+var getPictures = function () {
   var pictures = [];
-  for (var i = 0; i < quantity; i++) {
+  for (var i = 0; i < QUANTITY_OBJECTS; i++) {
     pictures[i] = {
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'описание' + i,
-      likes: getRandomInteger(minLikes, maxLikes),
-      comments: getRandomArrElement(mockComments),
-      quantityComments: getRandomInteger(minComments, maxComments)
+      likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+      comments: getComments(),
+      quantityComments: (getComments()).length
     };
   }
   return pictures;
@@ -69,5 +102,5 @@ var renderPictures = function (array) {
   picturesBlock.appendChild(fragment);
 };
 
-var pictures = getPictures(quantityObjects);
+var pictures = getPictures(QUANTITY_OBJECTS);
 renderPictures(pictures);
