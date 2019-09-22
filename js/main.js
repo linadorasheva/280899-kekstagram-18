@@ -106,3 +106,33 @@ var renderPictures = function (array) {
 
 var pictures = getPictures(QUANTITY_OBJECTS);
 renderPictures(pictures);
+
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+var bigPicture = document.querySelector('.big-picture');
+var bigPictureCancel = document.querySelector('.big-picture__cancel');
+
+var createBigPicture = function (evt) {
+  bigPicture.querySelector('img').src = evt.target.src;
+  bigPicture.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture__likes').textContent;
+  bigPicture.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;
+  // bigPicture.querySelector('.social__caption').textContent = ;
+
+  return bigPicture;
+}
+
+var bigPictureOpen = function (evt) {
+  bigPicture.classList.remove('hidden');
+  createBigPicture(evt);
+}
+
+picturesBlock.addEventListener('click', function(evt) {
+  evt.preventDefault();
+  if (evt.target.tagName === 'IMG') {
+    bigPictureOpen(evt)
+  };
+}, true);
+
+bigPictureCancel.addEventListener('click', function() {
+  bigPicture.classList.add('hidden');
+});
