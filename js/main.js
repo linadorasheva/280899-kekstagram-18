@@ -106,3 +106,191 @@ var renderPictures = function (array) {
 
 var pictures = getPictures(QUANTITY_OBJECTS);
 renderPictures(pictures);
+
+///////////////////////////////////////////////////////////////////////////
+
+var ENTER_KEY_CODE = 13;
+var ESC_KEY_CODE = 27;
+var PICTURE_DEFAULT_SIZE = 100;
+var STEP = 25;
+var MIN_PICTURE_SIZE = 25;
+var MAX_PICTURE_SIZE = 100;
+
+var form = document.querySelector('.img-upload__form');
+var uploadBtn = form.querySelector('#upload-file');
+var uploadOverlay = form.querySelector('.img-upload__overlay');
+var uploadClose = uploadOverlay.querySelector('#upload-cancel');
+var uploadSend = uploadOverlay.querySelector('#upload-submit');
+var uploadCommentField = uploadOverlay.querySelector('.text__description');
+
+var sizeValue = uploadOverlay.querySelector('.scale__control--value');
+var minus = uploadOverlay.querySelector('.scale__control--smaller');
+var plus = uploadOverlay.querySelector('.scale__control--bigger');
+var imgUpload = uploadOverlay.querySelector('.img-upload__preview');
+
+
+// Закрыть оверлей по escape
+var onUploadEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEY_CODE) {
+    uploadOverlayClose();
+  };
+};
+
+// Открыть оверлей редактора фото
+var uploadOverlayOpen = function () {
+  uploadOverlay.classList.remove('hidden');
+  effectSlider.classList.add('hidden');
+  document.addEventListener('keydown', onUploadEscPress);
+};
+
+// Закрыть оверлей редактора фото
+var uploadOverlayClose = function () {
+  uploadOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onUploadEscPress);
+  uploadBtn.value = '';
+  resetEffect();
+};
+
+// Открыть форму редактирования фото при изменении значения поля загрузки файла
+uploadBtn.addEventListener('change', function () {
+  uploadOverlayOpen();
+  sizeValue.value = PICTURE_DEFAULT_SIZE + '%';
+  imgUpload.style.transform = 'scale(' + (parseInt(sizeValue.value)/ 100) + ')';
+
+});
+
+// Закрыть форму редактирования фото по клику на крестик
+uploadClose.addEventListener('click', function () {
+  uploadOverlayClose();
+});
+
+// Не закрывать форму по escape если фокус в поле комментария
+uploadCommentField.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEY_CODE) {
+    evt.stopPropagation();
+  }
+});
+
+// Отправить форму по нажатию на enter, если он в фокусе
+uploadSend.addEventListener('keydown', function () {
+  if (evt.keyCode === ENTER_KEY_CODE) {
+    form.submit();
+  }
+});
+
+// увеличить значение масштаба на 25 при каждом нажатии
+var onPlusPress = function () {
+  if (parseInt(sizeValue.value) < MAX_PICTURE_SIZE ) {
+    sizeValue.value = parseInt(sizeValue.value) + STEP + '%';
+    imgUpload.style.transform = 'scale(' + (parseInt(sizeValue.value) / 100) + ')';
+  }
+};
+
+// уменьшить значение масштаба на 25 при каждом нажатии
+var onMinusPress = function () {
+  if (parseInt(sizeValue.value) > MIN_PICTURE_SIZE ) {
+    sizeValue.value = parseInt(sizeValue.value) - STEP + '%';
+    imgUpload.style.transform = 'scale(' + (parseInt(sizeValue.value) / 100) + ')';
+  }
+};
+
+plus.addEventListener('click', onPlusPress);
+minus.addEventListener('click', onMinusPress);
+
+/////////////////////////////////////////////////////////////////////////////
+
+var DEFAULT_CLASS = 'img-upload__preview';
+var DEFAULT_CLASS_PREFIX = 'effects__preview--';
+var INPUT_DEFAULT_VALUE = 'none';
+var effectSlider = uploadOverlay.querySelector('.img-upload__effect-level');
+var effectInputs = uploadOverlay.querySelectorAll('input[name="effect"]');
+var FILTERS = [];
+
+// Функция, задающая редактируемому фото класс по умолчанию
+var resetEffect = function () {
+  imgUpload.className = DEFAULT_CLASS;
+};
+
+// Функция, возвращающая название класса для редактируемого фото
+var getClassName = function (evt) {
+  return DEFAULT_CLASS_PREFIX + evt.target.value;
+};
+
+// Функция, скрывающая шкалу фильтра
+var filterHidden = function (evt) {
+  effectSlider.classList.add('hidden');
+  if (evt.target.value !== INPUT_DEFAULT_VALUE) {
+    effectSlider.classList.remove('hidden');
+  }
+}
+
+// Получаем массив фильтров из значения input'ов
+effectInputs.forEach(function(effectInput) {
+  FILTERS.push(effectInput.value);
+  effectInput.addEventListener('click', function (evt) {
+    resetEffect();
+    // Добавляем фото класс, соответствующий выбранному фильтру
+    imgUpload.classList.add(getClassName(evt));
+    filterHidden(evt);
+  });
+});
+
+////////////////////////////////////////////////////////////////////////////////
+
+// var pin = effectSlider.querySelector('.effect-level__pin');
+
+// pin.addEventListener('mouseUp', function () {
+
+// });
+
+///////////////////////////////////////////////////////////////////////////////
+
+var hashTagsInput = document.querySelector('.text__hashtags');
+var MAX_TEGS_LENGTH = 20;
+var MIN_TEGS_LENGTH = 1;
+var MAX_TEGS = 5;
+
+var HASHTAG_FIRST_CHARACTER = 'Хэш-тег начинается с символа # (решётка)';
+var MAX_TEGS_LENGTH = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
+var HASHTAG_MIN_LENGTH = 'Хеш-тег не может состоять только из одной решётки';
+
+var HASHTAG_REPEAT = 'Один и тот же хэш-тег не может быть использован дважды';
+var HASHTAGS_LENGTH = 'Нельзя указать больше пяти хэш-тегов';
+var HASHTAGS_TRUE = '';
+
+var checkHashtags = function (target, value) {
+  var hashtags = value.split(' ');
+  var textError = '';
+
+  for (var i = 0; i < hashtags.length; i++) {
+    var hashtag = hashtags[i];
+
+    if (hashtag[0] !== '#') {
+      textError = HASHTAG_FIRST_CHARACTER;
+      break;
+    } else if (hashtag.length === MIN_TEGS_LENGTH) {
+      textError = HASHTAG_MIN_LENGTH;
+      break;
+    } else if (hashtags.indexOf(hashtag) !== i) {
+      textError = HASHTAG_REPEAT;
+      break;
+    } else if (hashtags.length > MAX_TEGS) {
+      textError = HASHTAGS_LENGTH;
+      break;
+    } else if (hashtag.length > MAX_TEGS_LENGTH) {
+      textError = MAX_TEGS_LENGTH;
+      break;
+    } else {
+      textError = HASHTAGS_TRUE;
+    }
+  }
+
+  return target.setCustomValidity(textError);
+};
+
+hashTagsInput.addEventListener('input', function(evt) {
+  var hashtagValue = hashTagsInput.value.trim().toLowerCase();
+  var target = evt.target;
+
+  checkHashtags(target, hashtagValue);
+});
