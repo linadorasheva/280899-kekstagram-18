@@ -139,6 +139,7 @@ var uploadOverlayOpen = function () {
   uploadOverlay.classList.remove('hidden');
   effectSlider.classList.add('hidden');
   document.addEventListener('keydown', onUploadEscPress);
+  resetEffect();
 };
 
 // Закрыть оверлей редактора фото
@@ -146,7 +147,7 @@ var uploadOverlayClose = function () {
   uploadOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onUploadEscPress);
   uploadBtn.value = '';
-  resetEffect();
+  form.reset();
 };
 
 // Открыть форму редактирования фото при изменении значения поля загрузки файла
@@ -224,10 +225,58 @@ effectInputs.forEach(function (effectInput) {
   filters.push(effectInput.value);
   effectInput.addEventListener('click', function (evt) {
     resetEffect();
+    setDefaultIntensity();
     // Добавляем фото класс, соответствующий выбранному фильтру
     imgUpload.classList.add(getClassName(evt));
     filterHidden(evt);
   });
+});
+
+var sliderLine = form.querySelector('.effect-level__line');
+var sliderPin = sliderLine.querySelector('.effect-level__pin');
+var sliderDepth = sliderLine.querySelector('.effect-level__depth');
+
+// Сбрасываем шкалу
+var setDefaultIntensity = function() {
+  sliderPin.style.left = '0';
+  sliderDepth.style.width = '0';
+}
+
+// Обработчик перемещения ползунка интенсивности эффекта
+// Задать ограничение в условии, чтобы не выпадал из шкалы!
+sliderPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  // захват mouseDown
+  var startCoords = {
+    x: evt.clientX
+  };
+
+  // движение mouseMove
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX
+    };
+
+    startCoords = {
+      x: moveEvt.clientX
+    };
+
+    sliderPin.style.left = (sliderPin.offsetLeft - shift.x) + 'px';
+  };
+
+  // Остановка mouseUp
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    form.removeEventListener('mousemove', onMouseMove);
+    form.removeEventListener('mouseup', onMouseUp);
+  };
+
+  form.addEventListener('mousemove', onMouseMove);
+  form.addEventListener('mouseup', onMouseUp);
 });
 
 var hashTagsInput = form.querySelector('.text__hashtags');
