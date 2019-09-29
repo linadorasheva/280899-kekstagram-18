@@ -107,15 +107,13 @@ var renderPictures = function (array) {
 var pictures = getPictures(QUANTITY_OBJECTS);
 renderPictures(pictures);
 
-///////////////////////////////////////////////////////////////////////////
-
 var ENTER_KEY_CODE = 13;
 var ESC_KEY_CODE = 27;
 var PICTURE_DEFAULT_SIZE = 100;
 var STEP = 25;
 var MIN_PICTURE_SIZE = 25;
 var MAX_PICTURE_SIZE = 100;
-
+var PERCENT = 100;
 var form = document.querySelector('.img-upload__form');
 var uploadBtn = form.querySelector('#upload-file');
 var uploadOverlay = form.querySelector('.img-upload__overlay');
@@ -133,7 +131,7 @@ var imgUpload = uploadOverlay.querySelector('.img-upload__preview');
 var onUploadEscPress = function (evt) {
   if (evt.keyCode === ESC_KEY_CODE) {
     uploadOverlayClose();
-  };
+  }
 };
 
 // Открыть оверлей редактора фото
@@ -155,8 +153,7 @@ var uploadOverlayClose = function () {
 uploadBtn.addEventListener('change', function () {
   uploadOverlayOpen();
   sizeValue.value = PICTURE_DEFAULT_SIZE + '%';
-  imgUpload.style.transform = 'scale(' + (parseInt(sizeValue.value)/ 100) + ')';
-
+  imgUpload.style.transform = 'scale(' + parseInt(sizeValue.value / PERCENT, 10) + ')';
 });
 
 // Закрыть форму редактирования фото по клику на крестик
@@ -172,7 +169,7 @@ uploadCommentField.addEventListener('keydown', function (evt) {
 });
 
 // Отправить форму по нажатию на enter, если он в фокусе
-uploadSend.addEventListener('keydown', function () {
+uploadSend.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEY_CODE) {
     form.submit();
   }
@@ -180,24 +177,22 @@ uploadSend.addEventListener('keydown', function () {
 
 // увеличить значение масштаба на 25 при каждом нажатии
 var onPlusPress = function () {
-  if (parseInt(sizeValue.value) < MAX_PICTURE_SIZE ) {
-    sizeValue.value = parseInt(sizeValue.value) + STEP + '%';
-    imgUpload.style.transform = 'scale(' + (parseInt(sizeValue.value) / 100) + ')';
+  if (parseInt(sizeValue.value, 10) < MAX_PICTURE_SIZE) {
+    sizeValue.value = parseInt(sizeValue.value, 10) + STEP + '%';
+    imgUpload.style.transform = 'scale(' + parseInt(sizeValue.value / PERCENT, 10) + ')';
   }
 };
 
 // уменьшить значение масштаба на 25 при каждом нажатии
 var onMinusPress = function () {
-  if (parseInt(sizeValue.value) > MIN_PICTURE_SIZE ) {
-    sizeValue.value = parseInt(sizeValue.value) - STEP + '%';
-    imgUpload.style.transform = 'scale(' + (parseInt(sizeValue.value) / 100) + ')';
+  if (parseInt(sizeValue.value, 10) > MIN_PICTURE_SIZE) {
+    sizeValue.value = parseInt(sizeValue.value, 10) - STEP + '%';
+    imgUpload.style.transform = 'scale(' + parseInt(sizeValue.value / PERCENT, 10) + ')';
   }
 };
 
 plus.addEventListener('click', onPlusPress);
 minus.addEventListener('click', onMinusPress);
-
-/////////////////////////////////////////////////////////////////////////////
 
 var DEFAULT_CLASS = 'img-upload__preview';
 var DEFAULT_CLASS_PREFIX = 'effects__preview--';
@@ -222,10 +217,10 @@ var filterHidden = function (evt) {
   if (evt.target.value !== INPUT_DEFAULT_VALUE) {
     effectSlider.classList.remove('hidden');
   }
-}
+};
 
 // Получаем массив фильтров из значения input'ов
-effectInputs.forEach(function(effectInput) {
+effectInputs.forEach(function (effectInput) {
   FILTERS.push(effectInput.value);
   effectInput.addEventListener('click', function (evt) {
     resetEffect();
@@ -235,15 +230,11 @@ effectInputs.forEach(function(effectInput) {
   });
 });
 
-////////////////////////////////////////////////////////////////////////////////
-
 // var pin = effectSlider.querySelector('.effect-level__pin');
 
 // pin.addEventListener('mouseUp', function () {
 
 // });
-
-///////////////////////////////////////////////////////////////////////////////
 
 var hashTagsInput = document.querySelector('.text__hashtags');
 var MAX_TEGS_LENGTH = 20;
@@ -251,7 +242,7 @@ var MIN_TEGS_LENGTH = 1;
 var MAX_TEGS = 5;
 
 var HASHTAG_FIRST_CHARACTER = 'Хэш-тег начинается с символа # (решётка)';
-var MAX_TEGS_LENGTH = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
+var HASHTAG_MAX_LENGTH = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
 var HASHTAG_MIN_LENGTH = 'Хеш-тег не может состоять только из одной решётки';
 
 var HASHTAG_REPEAT = 'Один и тот же хэш-тег не может быть использован дважды';
@@ -278,7 +269,7 @@ var checkHashtags = function (target, value) {
       textError = HASHTAGS_LENGTH;
       break;
     } else if (hashtag.length > MAX_TEGS_LENGTH) {
-      textError = MAX_TEGS_LENGTH;
+      textError = HASHTAG_MAX_LENGTH;
       break;
     } else {
       textError = HASHTAGS_TRUE;
@@ -288,7 +279,7 @@ var checkHashtags = function (target, value) {
   return target.setCustomValidity(textError);
 };
 
-hashTagsInput.addEventListener('input', function(evt) {
+hashTagsInput.addEventListener('input', function (evt) {
   var hashtagValue = hashTagsInput.value.trim().toLowerCase();
   var target = evt.target;
 
