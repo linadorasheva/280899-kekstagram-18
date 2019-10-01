@@ -208,7 +208,7 @@ var FILTER_VALUE = {
   marvin: 100,
   phobos: 3,
   heat: 3
-}
+};
 
 // Функция, задающая редактируемому фото класс по умолчанию
 var resetEffect = function () {
@@ -236,7 +236,7 @@ var sliderDepth = sliderLine.querySelector('.effect-level__depth');
 var DEPTH_EFFECT_MAX = 100;
 
 // Сбрасываем шкалу на дефолтные 100%
-var setDefaultIntensity = function() {
+var setDefaultIntensity = function () {
   sliderPin.style.left = DEPTH_EFFECT_MAX + '%';
   sliderDepth.style.width = DEPTH_EFFECT_MAX + '%';
   filterValue.value = DEPTH_EFFECT_MAX;
@@ -245,78 +245,84 @@ var setDefaultIntensity = function() {
 // Устанавливаем интенсивность по дефолту на максимальные значения
 var setDefaultFilterValue = function () {
   switch (true) {
-      case imgUpload.classList.contains('effects__preview--chrome'):
-        imgUpload.style.filter = 'grayscale(' + FILTER_VALUE.chrome + ')';
-        break;
-      case imgUpload.classList.contains('effects__preview--sepia'):
-        imgUpload.style.filter = 'sepia(' + FILTER_VALUE.sepia + ')';
-        break;
-      case imgUpload.classList.contains('effects__preview--marvin'):
-        imgUpload.style.filter = 'invert(' + FILTER_VALUE.marvin + '%)';
-        break;
-      case imgUpload.classList.contains('effects__preview--phobos'):
-        imgUpload.style.filter = 'blur(' + FILTER_VALUE.phobos + 'px)';
-        break;
-      case imgUpload.classList.contains('effects__preview--heat'):
-        imgUpload.style.filter = 'brightness(' + FILTER_VALUE.heat + ')';
-        break;
+    case imgUpload.classList.contains('effects__preview--chrome'):
+      imgUpload.style.filter = 'grayscale(' + FILTER_VALUE.chrome + ')';
+      break;
+    case imgUpload.classList.contains('effects__preview--sepia'):
+      imgUpload.style.filter = 'sepia(' + FILTER_VALUE.sepia + ')';
+      break;
+    case imgUpload.classList.contains('effects__preview--marvin'):
+      imgUpload.style.filter = 'invert(' + FILTER_VALUE.marvin + '%)';
+      break;
+    case imgUpload.classList.contains('effects__preview--phobos'):
+      imgUpload.style.filter = 'blur(' + FILTER_VALUE.phobos + 'px)';
+      break;
+    case imgUpload.classList.contains('effects__preview--heat'):
+      imgUpload.style.filter = 'brightness(' + FILTER_VALUE.heat + ')';
+      break;
 
-      default: imgUpload.style.filter = '';
-    }
+    default: imgUpload.style.filter = '';
+  }
 };
 
 // Функция, возвращающая пропорцию
 var getProportion = function (paramOne, paramTwo) {
   return (paramOne / paramTwo).toFixed(1);
-}
+};
 
 // Функция для установки интенсивности
-var changeIntensity = function() {
+var changeIntensity = function () {
 
-  var sliderPinRad = sliderPin.offsetWidth / 2;
-  var sliderPinPosition = sliderPin.offsetLeft - sliderPinRad;
+  var sliderPinRadius = sliderPin.offsetWidth / 2;
+  var sliderPinPosition = sliderPin.offsetLeft - sliderPinRadius;
   var sliderLineWidth = sliderLine.offsetWidth;
 
+  // Находим коэффициэнт изменения интенсивности
   var coefficientFilter = getProportion(sliderPinPosition, sliderLineWidth);
 
-    switch (true) {
-      case imgUpload.classList.contains('effects__preview--chrome'):
-        imgUpload.style.filter = 'grayscale(' + coefficientFilter * FILTER_VALUE.chrome + ')';
-        break;
-      case imgUpload.classList.contains('effects__preview--sepia'):
-        imgUpload.style.filter = 'sepia(' + coefficientFilter * FILTER_VALUE.sepia + ')';
-        break;
-      case imgUpload.classList.contains('effects__preview--marvin'):
-        imgUpload.style.filter = 'invert(' + coefficientFilter * FILTER_VALUE.marvin + '%)';
-        break;
-      case imgUpload.classList.contains('effects__preview--phobos'):
-        imgUpload.style.filter = 'blur(' + coefficientFilter * FILTER_VALUE.phobos + 'px)';
-        break;
-      case imgUpload.classList.contains('effects__preview--heat'):
-        imgUpload.style.filter = 'brightness(' + coefficientFilter * FILTER_VALUE.heat + ')';
-        break;
+  switch (true) {
+    case imgUpload.classList.contains('effects__preview--chrome'):
+      filterValue.value = coefficientFilter * FILTER_VALUE.chrome;
+      imgUpload.style.filter = 'grayscale(' + filterValue.value + ')';
+      break;
+    case imgUpload.classList.contains('effects__preview--sepia'):
+      filterValue.value = coefficientFilter * FILTER_VALUE.sepia;
+      imgUpload.style.filter = 'sepia(' + filterValue.value + ')';
+      break;
+    case imgUpload.classList.contains('effects__preview--marvin'):
+      filterValue.value = coefficientFilter * FILTER_VALUE.marvin;
+      imgUpload.style.filter = 'invert(' + filterValue.value + '%)';
+      break;
+    case imgUpload.classList.contains('effects__preview--phobos'):
+      filterValue.value = coefficientFilter * FILTER_VALUE.phobos;
+      imgUpload.style.filter = 'blur(' + filterValue.value + 'px)';
+      break;
+    case imgUpload.classList.contains('effects__preview--heat'):
+      filterValue.value = coefficientFilter * FILTER_VALUE.heat;
+      imgUpload.style.filter = 'brightness(' + filterValue.value + ')';
+      break;
 
-      default: imgUpload.style.filter = '';
-    }
+    default: imgUpload.style.filter = '';
+  }
 };
 
 // Вешаем обработчик на каждый инпут-фильтр
-var installFilter = function (array , evt) {
+var installFilter = function (array) {
   for (var i = 0; i < array.length; i++) {
 
     // Вешаем обработчик для смены вида фильтра
-    array[i].addEventListener('click', function(evt) {
+    array[i].addEventListener('click', function (evt) {
       resetEffect();
       setDefaultIntensity();
 
       // Добавляем фото класс, соответствующий выбранному фильтру
       imgUpload.classList.add(getClassName(evt));
       setDefaultFilterValue();
+      // Вешаем обработчик для смены интенсивности фильтра
       sliderPin.addEventListener('mouseup', function () {
         changeIntensity();
       });
       filterHidden(evt);
-
     });
   }
 };
@@ -327,7 +333,7 @@ sliderPin.addEventListener('mousedown', function (evt) {
 
   // захват mouseDown
   var startCoords = {
-    x: evt.clientX
+    x: evt.clientX,
     y: evt.clientY
   };
 
@@ -336,14 +342,14 @@ sliderPin.addEventListener('mousedown', function (evt) {
     moveEvt.preventDefault();
 
     var shift = {
-      x: startCoords.x - moveEvt.clientX
+      x: startCoords.x - moveEvt.clientX,
       y: startCoords.y - moveEvt.clientY
     };
 
     startCoords = {
-      x: moveEvt.clientX
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
     };
-
 
     sliderPin.style.left = (sliderPin.offsetLeft - shift.x) + 'px';
   };
