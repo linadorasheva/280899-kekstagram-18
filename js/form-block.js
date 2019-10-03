@@ -18,9 +18,10 @@
   var sliderLine = form.querySelector('.effect-level__line');
   var sliderPin = sliderLine.querySelector('.effect-level__pin');
 
-  // Функция, задающая редактируемому фото класс по умолчанию
+  // Функция, задающая редактируемому фото класс по умолчанию и сброс фильтра
   var resetEffect = function () {
     imgUpload.className = DEFAULT_CLASS;
+    imgUpload.style.filter = '';
   };
 
   // Закрыть оверлей по escape
