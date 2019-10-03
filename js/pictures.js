@@ -15,24 +15,26 @@
         url: 'photos/' + (i + 1) + '.jpg',
         description: 'описание' + i,
         likes: window.data.getRandomInteger(MIN_LIKES, MAX_LIKES),
-        comments: window.getComments(),
-        quantityComments: (window.getComments()).length
+        comments: window.bigPicture.getComments(),
+        quantityComments: (window.bigPicture.getComments()).length
       };
     }
     return pictures;
   };
 
+  var createPicture = function (object) {
+    var element = templatePicture.cloneNode(true);
+
+    element.querySelector('.picture__img').src = object.url;
+    element.querySelector('.picture__likes').textContent = object.likes;
+    element.querySelector('.picture__comments').textContent = object.quantityComments;
+
+    return element;
+  };
+
   window.pictures = {
 
-    createPicture: function (object) {
-      var element = templatePicture.cloneNode(true);
-
-      element.querySelector('.picture__img').src = object.url;
-      element.querySelector('.picture__likes').textContent = object.likes;
-      element.querySelector('.picture__comments').textContent = object.quantityComments;
-
-      return element;
-    },
+    createPicture: createPicture,
 
     pictures: getPictures(QUANTITY_OBJECTS)
   };
