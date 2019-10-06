@@ -25,12 +25,9 @@
     imgUpload.style.filter = '';
   };
 
-  // Закрыть оверлей по escape
-  var onEscPress = function (evt) {
-    if (evt.keyCode === window.data.ESC_KEY_CODE) {
-      uploadOverlayClose();
-    }
-  };
+  var onEscPress = function(evt) {
+     window.data.escPress(evt, uploadOverlayClose);
+  }
 
   // Открыть оверлей редактора фото
   var uploadOverlayOpen = function () {
