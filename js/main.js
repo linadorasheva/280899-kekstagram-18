@@ -437,5 +437,4 @@ hashTagsInput.addEventListener('change', function (evt) {
   var target = evt.target;
 
   checkHashtags(target, hashtagValue);
->>>>>>> 39db86b2c8a41be2a0ca4ff56a4aaa736fb9a5d6
 });
