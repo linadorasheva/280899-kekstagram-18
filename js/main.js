@@ -2,7 +2,7 @@
 
 var templatePicture = document.querySelector('#picture').content;
 
-var MOCK_COMMENTS = [
+var mockComments = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда  вы  делаете  фотографию,  хорошо  бы  убирать  палец  из кадра. В конце концов это просто непрофессионально.',
@@ -11,7 +11,7 @@ var MOCK_COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-var MOCK_NAMES = [
+var mockNames = [
   'Шелдон',
   'Говард',
   'Леонард',
@@ -35,7 +35,7 @@ var picturesBlock = document.querySelector('.pictures');
 var getMessage = function () {
   var messageArray = [];
   for (var i = 0; i < window.data.getRandomInteger(1, 2); i++) {
-    messageArray[i] = MOCK_COMMENTS[window.data.getRandomArrElement(MOCK_COMMENTS)];
+    messageArray[i] = mockComments[window.data.getRandomArrElement(mockComments)];
   }
   var message = messageArray.join(' ');
   return message;
@@ -49,7 +49,7 @@ var getComments = function () {
     comments[j] = {
       avatar: 'img/avatar-' + window.data.getRandomInteger(MIN_PHOTO_AVATAR, MAX_PHOTO_AVATAR) + '.svg',
       message: getMessage(),
-      name: MOCK_NAMES[window.data.getRandomArrElement(MOCK_NAMES)]
+      name: mockNames[window.data.getRandomArrElement(mockNames)]
     };
   }
   return comments;
@@ -92,35 +92,6 @@ var renderPictures = function (array) {
 
 var pictures = getPictures(QUANTITY_OBJECTS);
 renderPictures(pictures);
-
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
-var bigPicture = document.querySelector('.big-picture');
-var bigPictureCancel = document.querySelector('.big-picture__cancel');
-
-var createBigPicture = function (evt) {
-  bigPicture.querySelector('img').src = evt.target.src;
-  bigPicture.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture__likes').textContent;
-  bigPicture.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;
-
-
-  return bigPicture;
-}
-
-var bigPictureOpen = function (evt) {
-  bigPicture.classList.remove('hidden');
-  createBigPicture(evt);
-}
-
-picturesBlock.addEventListener('click', function(evt) {
-  evt.preventDefault();
-  if (evt.target.tagName === 'IMG') {
-    bigPictureOpen(evt)
-  };
-}, true);
-
-bigPictureCancel.addEventListener('click', function() {
-  bigPicture.classList.add('hidden');
 
 var PICTURE_DEFAULT_SIZE = 100;
 var STEP = 25;
