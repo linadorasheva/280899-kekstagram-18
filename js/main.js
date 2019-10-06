@@ -2,7 +2,7 @@
 
 var templatePicture = document.querySelector('#picture').content;
 
-var mockComments = [
+var MOCK_COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда  вы  делаете  фотографию,  хорошо  бы  убирать  палец  из кадра. В конце концов это просто непрофессионально.',
@@ -11,7 +11,7 @@ var mockComments = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-var mockNames = [
+var MOCK_NAMES = [
   'Шелдон',
   'Говард',
   'Леонард',
@@ -35,7 +35,7 @@ var picturesBlock = document.querySelector('.pictures');
 var getMessage = function () {
   var messageArray = [];
   for (var i = 0; i < window.data.getRandomInteger(1, 2); i++) {
-    messageArray[i] = mockComments[window.data.getRandomArrElement(mockComments)];
+    messageArray[i] = MOCK_COMMENTS[window.data.getRandomArrElement(MOCK_COMMENTS)];
   }
   var message = messageArray.join(' ');
   return message;
@@ -49,7 +49,7 @@ var getComments = function () {
     comments[j] = {
       avatar: 'img/avatar-' + window.data.getRandomInteger(MIN_PHOTO_AVATAR, MAX_PHOTO_AVATAR) + '.svg',
       message: getMessage(),
-      name: mockNames[window.data.getRandomArrElement(mockNames)]
+      name: MOCK_NAMES[window.data.getRandomArrElement(MOCK_NAMES)]
     };
   }
   return comments;
