@@ -25,9 +25,9 @@
     imgUpload.style.filter = '';
   };
 
-  var onEscPress = function(evt) {
-     window.data.escPress(evt, uploadOverlayClose);
-  }
+  var onEscPress = function (evt) {
+    window.data.escPress(evt, uploadOverlayClose);
+  };
 
   // Открыть оверлей редактора фото
   var uploadOverlayOpen = function () {
