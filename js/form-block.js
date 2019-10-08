@@ -26,7 +26,9 @@
 
   // Закрыть оверлей по escape
   var onEscPress = function (evt) {
-    window.data.escPress(evt, uploadOverlayClose);
+    if (window.data.isEscPress(evt)) {
+      uploadOverlayClose();
+    }
   };
 
   // Открыть оверлей редактора фото
@@ -64,7 +66,7 @@
 
   // Отправить форму по нажатию на enter, если кнопка отправки в фокусе
   uploadSend.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.data.ENTER_KEY_CODE) {
+    if (window.data.isEnterPress(evt)) {
       form.submit();
     }
   });

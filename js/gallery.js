@@ -25,6 +25,6 @@
       }
     }, true);
 
-    picturesList[j].addEventListener('keydown', window.bigPicture.onEnterPressOnPhoto);
+    picturesList[j].addEventListener('keydown', window.bigPicture.onEnterPress);
   }
 })();

@@ -22,17 +22,13 @@
   };
 
   // Закрыть по escape
-  var escPress = function (evt, close) {
-    if (evt.keyCode === window.data.ESC_KEY_CODE) {
-      close();
-    }
+  var isEscPress = function (evt) {
+    return evt.keyCode === window.data.ESC_KEY_CODE;
   };
 
   // Открыть по enter
-  var enterPress = function (evt, open) {
-    if (evt.keyCode === window.data.ENTER_KEY_CODE) {
-      open(evt);
-    }
+  var isEnterPress = function (evt) {
+    return evt.keyCode === window.data.ENTER_KEY_CODE;
   };
 
   window.data = {
@@ -42,7 +38,7 @@
     getRandomArrElement: getRandomArrElement,
     getRandomInteger: getRandomInteger,
     getProportion: getProportion,
-    escPress: escPress,
-    enterPress: enterPress
+    isEscPress: isEscPress,
+    isEnterPress: isEnterPress
   };
 })();

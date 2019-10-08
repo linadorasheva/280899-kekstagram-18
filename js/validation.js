@@ -58,14 +58,14 @@
 
   // Не закрывать форму по escape если фокус в поле комментария
   uploadCommentField.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.data.ESC_KEY_CODE) {
+    if (window.data.isEscPress(evt)) {
       evt.stopPropagation();
     }
   });
 
   // Не закрывать форму по escape если фокус в поле hashtag
   hashTagsInput.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.data.ESC_KEY_CODE) {
+    if (window.data.isEscPress(evt)) {
       evt.stopPropagation();
     }
   });
