@@ -143,7 +143,7 @@
   document.addEventListener('keydown', onEscPress);
 
   // Запрет закрытия окна, если коммент в фокусе
-  bigPictureComment.addEventListener('keydown', function(evt) {
+  bigPictureComment.addEventListener('keydown', function (evt) {
     if (window.data.isEscPress(evt)) {
       evt.stopPropagation();
     }
