@@ -15,6 +15,7 @@
     picturesBlock.appendChild(fragment);
   };
 
+
   // Получаем сообщение об ошибке из шаблона
   var createError = function () {
     var element = errorTemplate.cloneNode(true);

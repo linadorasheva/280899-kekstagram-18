@@ -7,6 +7,7 @@
     var element = templatePicture.cloneNode(true);
 
     element.querySelector('.picture__img').src = object.url;
+    element.querySelector('.picture__img').alt = object.description;
     element.querySelector('.picture__likes').textContent = object.likes;
     element.querySelector('.picture__comments').textContent = object.quantityComments;
 
