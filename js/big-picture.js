@@ -32,6 +32,7 @@
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
   var commentsCount = bigPicture.querySelector('.social__comment-count');
   var commentsLoader = bigPicture.querySelector('.comments-loader');
+  var bigPictureComment = bigPicture.querySelector('.social__footer-text');
 
   // Функция, генерирующая текст комментария
   var getMessage = function () {
@@ -118,28 +119,40 @@
   };
 
   // Открытие fullscreen - фото по enter
-  var onEnterPressOnPhoto = function (evt) {
-    window.data.enterPress(evt, bigPictureOpen);
+  var onEnterPress = function (evt) {
+    if (window.data.isEnterPress(evt)) {
+      bigPictureOpen(evt);
+    }
   };
 
   // Функция закрытия fullscreen - фото по клику на крестик
   var bigPictureClose = function () {
     bigPicture.classList.add('hidden');
   };
+
   bigPictureCancel.addEventListener('click', function () {
     bigPicture.classList.add('hidden');
   });
 
   // Закрытие по нажатию escape
-  var onEscPressClose = function (evt) {
-    window.data.escPress(evt, bigPictureClose);
+  var onEscPress = function (evt) {
+    if (window.data.isEscPress(evt)) {
+      bigPictureClose();
+    }
   };
-  document.addEventListener('keydown', onEscPressClose);
+  document.addEventListener('keydown', onEscPress);
+
+  // Запрет закрытия окна, если коммент в фокусе
+  bigPictureComment.addEventListener('keydown', function(evt) {
+    if (window.data.isEscPress(evt)) {
+      evt.stopPropagation();
+    }
+  });
 
   window.bigPicture = {
     getComments: getComments,
     bigPictureOpen: bigPictureOpen,
     bigPictureClose: bigPictureClose,
-    onEnterPressOnPhoto: onEnterPressOnPhoto
+    onEnterPress: onEnterPress
   };
 })();
