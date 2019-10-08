@@ -54,6 +54,7 @@
         name: MOCK_NAMES[window.data.getRandomArrElement(MOCK_NAMES)]
       };
     }
+
     return comments;
   };
 
@@ -102,6 +103,8 @@
     }
     bigPicture.querySelector('.likes-count').textContent = evt.target.parentNode.querySelector('.picture__likes').textContent;
     bigPicture.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;
+    bigPicture.querySelector('.social__comments').innerHTML = '';
+
     bigPicture.querySelector('.social__comments').appendChild(getArrayComments(getComments()));
     return bigPicture;
   };
