@@ -18,7 +18,6 @@
   var sliderLine = form.querySelector('.effect-level__line');
   var sliderPin = sliderLine.querySelector('.effect-level__pin');
 
-
   // Функция, задающая редактируемому фото класс по умолчанию и сброс фильтра
   var resetEffect = function () {
     imgUpload.className = DEFAULT_CLASS;
@@ -27,9 +26,7 @@
 
   // Закрыть оверлей по escape
   var onEscPress = function (evt) {
-    if (evt.keyCode === window.data.ESC_KEY_CODE) {
-      uploadOverlayClose();
-    }
+    window.data.escPress(evt, uploadOverlayClose);
   };
 
   // Открыть оверлей редактора фото
@@ -48,6 +45,7 @@
     form.reset();
   };
 
+  // Устанавливаем размер по дефолту (100%)
   var setDefaultSize = function () {
     sizeValue.value = PICTURE_DEFAULT_SIZE + '%';
     imgUpload.style.transform = 'scale(' + parseInt(sizeValue.value, 10) / window.data.PERCENT + ')';

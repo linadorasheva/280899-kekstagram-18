@@ -9,6 +9,7 @@
 
 
     evt.preventDefault();
+
     // захват mouseDown
     var startCoords = {
       x: evt.clientX,
@@ -39,18 +40,18 @@
 
       // Функция для смены интенсивности фильтра
       window.intensity.changeIntensity();
-
     };
 
     // Остановка mouseUp
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      window.formBlock.filterSlider.removeEventListener('mousemove', onMouseMove);
-      window.formBlock.filterSlider.removeEventListener('mouseup', onMouseUp);
+      window.formBlock.form.removeEventListener('mousemove', onMouseMove);
+      window.formBlock.form.removeEventListener('mouseup', onMouseUp);
     };
 
-    window.formBlock.filterSlider.addEventListener('mousemove', onMouseMove);
-    window.formBlock.filterSlider.addEventListener('mouseup', onMouseUp);
+    window.formBlock.form.addEventListener('mousemove', onMouseMove);
+    window.formBlock.form.addEventListener('mouseup', onMouseUp);
+
   });
 })();
