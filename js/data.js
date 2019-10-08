@@ -4,6 +4,7 @@
   var ENTER_KEY_CODE = 13;
   var ESC_KEY_CODE = 27;
   var PERCENT = 100;
+
   var getRandomArrElement = function (arr) {
     var randomArrElement = Math.floor(Math.random() * arr.length);
 
@@ -20,6 +21,19 @@
     return (paramOne / paramTwo).toFixed(1);
   };
 
+  // Закрыть по escape
+  var escPress = function (evt, close) {
+    if (evt.keyCode === window.data.ESC_KEY_CODE) {
+      close();
+    }
+  };
+
+  // Открыть по enter
+  var enterPress = function (evt, open) {
+    if (evt.keyCode === window.data.ENTER_KEY_CODE) {
+      open(evt);
+    }
+  };
 
   window.data = {
     ENTER_KEY_CODE: ENTER_KEY_CODE,
@@ -27,6 +41,8 @@
     PERCENT: PERCENT,
     getRandomArrElement: getRandomArrElement,
     getRandomInteger: getRandomInteger,
-    getProportion: getProportion
+    getProportion: getProportion,
+    escPress: escPress,
+    enterPress: enterPress
   };
 })();

@@ -26,9 +26,7 @@
 
   // Закрыть оверлей по escape
   var onEscPress = function (evt) {
-    if (evt.keyCode === window.data.ESC_KEY_CODE) {
-      uploadOverlayClose();
-    }
+    window.data.escPress(evt, uploadOverlayClose);
   };
 
   // Открыть оверлей редактора фото
@@ -47,6 +45,7 @@
     form.reset();
   };
 
+  // Устанавливаем размер по дефолту (100%)
   var setDefaultSize = function () {
     sizeValue.value = PICTURE_DEFAULT_SIZE + '%';
     imgUpload.style.transform = 'scale(' + parseInt(sizeValue.value, 10) / window.data.PERCENT + ')';
