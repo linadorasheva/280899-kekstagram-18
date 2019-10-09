@@ -12,6 +12,7 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
+
       if (xhr.status === STATUS_OK) {
         onSuccess(xhr.response);
       } else {
