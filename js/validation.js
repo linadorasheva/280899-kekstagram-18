@@ -7,6 +7,7 @@
   var MAX_TEGS_LENGTH = 20;
   var MIN_TEGS_LENGTH = 1;
   var MAX_TEGS = 5;
+  var MAX_QUANTITY_SHARP_SYMBOL = 1;
 
   var HASHTAG_FIRST_CHARACTER = 'Хэш-тег начинается с символа # (решётка)';
   var HASHTAG_MAX_LENGTH = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
@@ -38,7 +39,7 @@
         case hashtag.length > MAX_TEGS_LENGTH:
           textError = HASHTAG_MAX_LENGTH;
           break;
-        case hashtag.match(/#/g).length > 1:
+        case hashtag.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
           textError = HASHTAG_NO_SPACE;
           break;
         default:

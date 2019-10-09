@@ -6,6 +6,8 @@
   var MAX_COMMENTS = 10;
   var MIN_PHOTO_AVATAR = 1;
   var MAX_PHOTO_AVATAR = 6;
+  var MIN_QUANTITY_SENTENCE = 1;
+  var MAX_QUANTITY_SENTENCE = 2;
 
   var MOCK_NAMES = [
     'Шелдон',
@@ -37,7 +39,7 @@
   // Функция, генерирующая текст комментария
   var getMessage = function () {
     var messageArray = [];
-    for (var i = 0; i < window.data.getRandomInteger(1, 2); i++) {
+    for (var i = 0; i < window.data.getRandomInteger(MIN_QUANTITY_SENTENCE, MAX_QUANTITY_SENTENCE); i++) {
       messageArray[i] = MOCK_COMMENTS[window.data.getRandomArrElement(MOCK_COMMENTS)];
     }
     var message = messageArray.join(' ');
