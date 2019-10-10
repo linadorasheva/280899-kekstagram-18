@@ -64,11 +64,22 @@
     uploadOverlayClose();
   });
 
-  // Отправить форму по нажатию на enter, если кнопка отправки в фокусе
-  uploadSend.addEventListener('keydown', function (evt) {
+  var onSuccess = function (evt) {
     if (window.data.isEnterPress(evt)) {
-      form.submit();
+      evt.preventDefault();
+      window.load.upload(new FormData(form), function () {
+        uploadOverlayClose();
+      });
     }
+  };
+
+
+  // Отправить форму по нажатию на enter
+  uploadSend.addEventListener('keydown', onSuccess, window.data.onError);
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.load.upload(new FormData(form), window.data.onSuccess, window.data.onError);
   });
 
   window.formBlock = {
@@ -81,6 +92,7 @@
     sliderPin: sliderPin,
     sliderLine: sliderLine,
     INPUT_DEFAULT_VALUE: INPUT_DEFAULT_VALUE,
-    resetEffect: resetEffect
+    resetEffect: resetEffect,
+    uploadOverlayClose: uploadOverlayClose
   };
 })();

@@ -31,6 +31,81 @@
     return evt.keyCode === window.data.ENTER_KEY_CODE;
   };
 
+
+  var errorTemplate = document.querySelector('#error').content;
+  var mainBlock = document.querySelector('main');
+  var successTemplate = document.querySelector('#success').content;
+
+  // Получаем сообщение об ошибке из шаблона
+  var createAlert = function (template) {
+    var element = template.cloneNode(true);
+
+    return element;
+  };
+
+  // Сообщение при ошибочно-обработанном запросе
+  var onError = function (message, action) {
+    mainBlock.appendChild(createAlert(errorTemplate));
+    document.querySelector('.error__title').textContent = message;
+    if (action) {
+      action();
+    }
+  };
+
+  // Отрисовываем фото, загруженные с сервера (в случае успешно-обработанного запроса)
+  var onSuccess = function (action, data) {
+    if (data) {
+      action(data);
+    }
+
+    action();
+  };
+
+  var onSuccessAlert = function () {
+    mainBlock.appendChild(createAlert(successTemplate));
+  };
+
+
+  var addListenersOnBtn = function () {
+    var errorMessage = document.querySelector('.error');
+    var btnsError = document.querySelectorAll('.error__button');
+
+    var successMessage = document.querySelector('.success');
+    var btnSuccess = document.querySelector('.success__button');
+
+    if (btnSuccess) {
+      btnSuccess.addEventListener('click', function () {
+        mainBlock.removeChild(successMessage);
+      });
+
+      successMessage.addEventListener('click', function () {
+        mainBlock.removeChild(successMessage);
+      });
+
+      document.addEventListener('keydown', function (evt) {
+        if (window.data.isEscPress(evt)) {
+          mainBlock.removeChild(successMessage);
+        }
+      });
+    } else {
+      for (var i = 0; i < btnsError.length; i++) {
+        btnsError[i].addEventListener('click', function () {
+          mainBlock.removeChild(errorMessage);
+        });
+      }
+
+      errorMessage.addEventListener('click', function () {
+        mainBlock.removeChild(errorMessage);
+      });
+
+      document.addEventListener('keydown', function (evt) {
+        if (window.data.isEscPress(evt)) {
+          mainBlock.removeChild(errorMessage);
+        }
+      });
+    }
+  };
+
   window.data = {
     ENTER_KEY_CODE: ENTER_KEY_CODE,
     ESC_KEY_CODE: ESC_KEY_CODE,
@@ -39,6 +114,10 @@
     getRandomInteger: getRandomInteger,
     getProportion: getProportion,
     isEscPress: isEscPress,
-    isEnterPress: isEnterPress
+    isEnterPress: isEnterPress,
+    onError: onError,
+    onSuccess: onSuccess,
+    addListenersOnBtn: addListenersOnBtn,
+    onSuccessAlert: onSuccessAlert
   };
 })();
