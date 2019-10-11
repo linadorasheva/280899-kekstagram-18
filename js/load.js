@@ -11,21 +11,23 @@
 
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', function () {
+    xhr.addEventListener('load', function (evt) {
       if (xhr.status === STATUS_OK) {
         onSuccess(xhr.response);
-
       } else {
         onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+        window.data.addListenersOnBtnsError(evt);
       }
     });
 
-    xhr.addEventListener('error', function () {
+    xhr.addEventListener('error', function (evt) {
       onError('Произошла ошибка соединения');
+      window.data.addListenersOnBtnsError(evt);
     });
 
-    xhr.addEventListener('timeout', function () {
+    xhr.addEventListener('timeout', function (evt) {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      window.data.addListenersOnBtnsError(evt);
     });
 
     xhr.timeout = TIMEOUT;
@@ -39,29 +41,30 @@
 
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', function () {
+    xhr.addEventListener('load', function (evt) {
       if (xhr.status === STATUS_OK) {
         onSuccess(window.formBlock.uploadOverlayClose);
         window.data.onSuccessAlert();
-        window.data.addListenersOnBtn();
+        window.data.addListenersOnBtnsSuccess();
       } else {
-        onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
-        window.data.addListenersOnBtn();
+        onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText, window.formBlock.uploadOverlayClose);
+        window.data.addListenersOnBtnsError(evt);
       }
     });
 
-    xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+    xhr.addEventListener('error', function (evt) {
+      onError('Произошла ошибка соединения', window.formBlock.uploadOverlayClose);
+      window.data.addListenersOnBtnsError(evt);
     });
 
-    xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    xhr.addEventListener('timeout', function (evt) {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', window.formBlock.uploadOverlayClose);
+      window.data.addListenersOnBtnsError(evt);
     });
 
     xhr.timeout = TIMEOUT;
     xhr.open('POST', 'https://js.dump.academy/kekstagram');
     xhr.send(data);
-
   };
 
   window.load = {

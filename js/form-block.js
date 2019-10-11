@@ -64,7 +64,7 @@
     uploadOverlayClose();
   });
 
-  var onSuccess = function (evt) {
+  var onSuccessUploadForm = function (evt) {
     if (window.data.isEnterPress(evt)) {
       evt.preventDefault();
       window.load.upload(new FormData(form), function () {
@@ -73,13 +73,12 @@
     }
   };
 
-
   // Отправить форму по нажатию на enter
-  uploadSend.addEventListener('keydown', onSuccess, window.data.onError);
+  uploadSend.addEventListener('keydown', onSuccessUploadForm, window.data.onError);
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.load.upload(new FormData(form), window.data.onSuccess, window.data.onError);
+    window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
   });
 
   window.formBlock = {

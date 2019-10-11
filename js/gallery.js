@@ -28,10 +28,6 @@
     addListeners();
   };
 
-  window.load.load(function (response) {
-    window.data.onSuccess(renderPictures, response);
-  }, window.data.onError);
-
-
+  window.load.load(renderPictures, window.data.onError);
 })();
 

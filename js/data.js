@@ -52,58 +52,67 @@
     }
   };
 
-  // Отрисовываем фото, загруженные с сервера (в случае успешно-обработанного запроса)
-  var onSuccess = function (action, data) {
-    if (data) {
-      action(data);
-    }
-
-    action();
-  };
-
+  // Сообщение при успешном запросе
   var onSuccessAlert = function () {
     mainBlock.appendChild(createAlert(successTemplate));
   };
 
-
-  var addListenersOnBtn = function () {
+  // Обработчики на сообщение ошибки
+  var addListenersOnBtnsError = function () {
     var errorMessage = document.querySelector('.error');
-    var btnsError = document.querySelectorAll('.error__button');
 
-    var successMessage = document.querySelector('.success');
-    var btnSuccess = document.querySelector('.success__button');
-
-    if (btnSuccess) {
-      btnSuccess.addEventListener('click', function () {
-        mainBlock.removeChild(successMessage);
-      });
-
-      successMessage.addEventListener('click', function () {
-        mainBlock.removeChild(successMessage);
-      });
-
-      document.addEventListener('keydown', function (evt) {
-        if (window.data.isEscPress(evt)) {
-          mainBlock.removeChild(successMessage);
-        }
-      });
-    } else {
-      for (var i = 0; i < btnsError.length; i++) {
-        btnsError[i].addEventListener('click', function () {
+    var onAlertClose = function (evt) {
+      switch (true) {
+        case window.data.isEscPress(evt):
           mainBlock.removeChild(errorMessage);
-        });
+          document.removeEventListener('keydown', onAlertClose);
+          errorMessage.removeEventListener('click', onAlertClose);
+          break;
+        case evt.target.className === 'error':
+          mainBlock.removeChild(errorMessage);
+          document.removeEventListener('keydown', onAlertClose);
+          errorMessage.removeEventListener('click', onAlertClose);
+          break;
+        case evt.target.className === 'error__button':
+          mainBlock.removeChild(errorMessage);
+          document.removeEventListener('keydown', onAlertClose);
+          errorMessage.removeEventListener('click', onAlertClose);
+          break;
+        default: evt.stopPropagation();
       }
+    };
 
-      errorMessage.addEventListener('click', function () {
-        mainBlock.removeChild(errorMessage);
-      });
+    errorMessage.addEventListener('click', onAlertClose);
+    document.addEventListener('keydown', onAlertClose);
+  };
 
-      document.addEventListener('keydown', function (evt) {
-        if (window.data.isEscPress(evt)) {
-          mainBlock.removeChild(errorMessage);
-        }
-      });
-    }
+  // Обработчики на сообщение успеха
+  var addListenersOnBtnsSuccess = function () {
+    var successMessage = document.querySelector('.success');
+
+    var onAlertClose = function (evt) {
+      switch (true) {
+        case isEscPress(evt):
+          mainBlock.removeChild(successMessage);
+          document.removeEventListener('keydown', onAlertClose);
+          successMessage.removeEventListener('click', onAlertClose);
+          break;
+        case evt.target.className === 'success':
+          mainBlock.removeChild(successMessage);
+          document.removeEventListener('keydown', onAlertClose);
+          successMessage.removeEventListener('click', onAlertClose);
+          break;
+        case evt.target.className === 'success__button':
+          mainBlock.removeChild(successMessage);
+          document.removeEventListener('keydown', onAlertClose);
+          successMessage.removeEventListener('click', onAlertClose);
+          break;
+        default: evt.stopPropagation();
+      }
+    };
+
+    successMessage.addEventListener('click', onAlertClose);
+    document.addEventListener('keydown', onAlertClose);
   };
 
   window.data = {
@@ -116,8 +125,8 @@
     isEscPress: isEscPress,
     isEnterPress: isEnterPress,
     onError: onError,
-    onSuccess: onSuccess,
-    addListenersOnBtn: addListenersOnBtn,
+    addListenersOnBtnsSuccess: addListenersOnBtnsSuccess,
+    addListenersOnBtnsError: addListenersOnBtnsError,
     onSuccessAlert: onSuccessAlert
   };
 })();
