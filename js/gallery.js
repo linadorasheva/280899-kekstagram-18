@@ -22,7 +22,8 @@
   var renderPictures = function (array) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(window.pictures.createPicture(array[i]));
+
+      fragment.appendChild(window.pictures.createPicture(i, array[i]));
     }
     picturesBlock.appendChild(fragment);
     addListeners();

@@ -4,6 +4,7 @@
   var URL = 'https://js.dump.academy/kekstagram/data';
   var STATUS_OK = 200;
   var TIMEOUT = 10000;
+  var comments = [];
 
   var load = function (onSuccess, onError) {
 
@@ -14,6 +15,9 @@
     xhr.addEventListener('load', function (evt) {
       if (xhr.status === STATUS_OK) {
         onSuccess(xhr.response);
+        comments = xhr.response.forEach(function (element) {
+          comments.push(element.comments);
+        });
       } else {
         onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
         window.data.addListenersOnBtnsError(evt);
@@ -69,6 +73,7 @@
 
   window.load = {
     load: load,
-    upload: upload
+    upload: upload,
+    comments: comments
   };
 })();
