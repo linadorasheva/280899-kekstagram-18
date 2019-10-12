@@ -19,7 +19,9 @@ var mockNames = [
   'Стюарт',
   'Барри'
 ];
-
+var ENTER_KEY_CODE = 13;
+var ESC_KEY_CODE = 27;
+var PERCENT = 100;
 var QUANTITY_OBJECTS = 25;
 var MIN_LIKES = 15;
 var MAX_LIKES = 200;
@@ -31,11 +33,23 @@ var MAX_PHOTO_AVATAR = 6;
 // Контейнер для фотографий других пользователей
 var picturesBlock = document.querySelector('.pictures');
 
+var getRandomArrElement = function (arr) {
+  var randomArrElement = Math.floor(Math.random() * arr.length);
+
+  return randomArrElement;
+};
+
+var getRandomInteger = function (min, max) {
+  var randomInteger = min - 0.5 + Math.random() * (max - min + 1);
+  randomInteger = Math.round(randomInteger);
+  return randomInteger;
+};
+
 // Функция, генерирующая текст комментария
 var getMessage = function () {
   var messageArray = [];
-  for (var i = 0; i < window.data.getRandomInteger(1, 2); i++) {
-    messageArray[i] = mockComments[window.data.getRandomArrElement(mockComments)];
+  for (var i = 0; i < getRandomInteger(1, 2); i++) {
+    messageArray[i] = mockComments[getRandomArrElement(mockComments)];
   }
   var message = messageArray.join(' ');
   return message;
@@ -44,12 +58,12 @@ var getMessage = function () {
 // Функция, возвращающая массив объектов-комментариев к фото
 var getComments = function () {
   var comments = [];
-  var quantityComments = window.data.getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
+  var quantityComments = getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
   for (var j = 0; j <= quantityComments; j++) {
     comments[j] = {
-      avatar: 'img/avatar-' + window.data.getRandomInteger(MIN_PHOTO_AVATAR, MAX_PHOTO_AVATAR) + '.svg',
+      avatar: 'img/avatar-' + getRandomInteger(MIN_PHOTO_AVATAR, MAX_PHOTO_AVATAR) + '.svg',
       message: getMessage(),
-      name: mockNames[window.data.getRandomArrElement(mockNames)]
+      name: mockNames[getRandomArrElement(mockNames)]
     };
   }
   return comments;
@@ -62,7 +76,7 @@ var getPictures = function () {
     pictures[i] = {
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'описание' + i,
-      likes: window.data.getRandomInteger(MIN_LIKES, MAX_LIKES),
+      likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
       comments: getComments(),
       quantityComments: (getComments()).length
     };
@@ -97,7 +111,7 @@ var PICTURE_DEFAULT_SIZE = 100;
 var STEP = 25;
 var MIN_PICTURE_SIZE = 25;
 var MAX_PICTURE_SIZE = 100;
-var PERCENT = 100;
+
 var form = document.querySelector('.img-upload__form');
 var uploadBtn = form.querySelector('#upload-file');
 var uploadOverlay = form.querySelector('.img-upload__overlay');
@@ -113,7 +127,7 @@ var imgUpload = uploadOverlay.querySelector('.img-upload__preview');
 
 // Закрыть оверлей по escape
 var onEscPress = function (evt) {
-  if (evt.keyCode === window.data.ESC_KEY_CODE) {
+  if (evt.keyCode === ESC_KEY_CODE) {
     uploadOverlayClose();
   }
 };
@@ -149,14 +163,14 @@ uploadClose.addEventListener('click', function () {
 
 // Не закрывать форму по escape если фокус в поле комментария
 uploadCommentField.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === window.data.ESC_KEY_CODE) {
+  if (evt.keyCode === ESC_KEY_CODE) {
     evt.stopPropagation();
   }
 });
 
 // Отправить форму по нажатию на enter, если он в фокусе
 uploadSend.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === window.data.ENTER_KEY_CODE) {
+  if (evt.keyCode === ENTER_KEY_CODE) {
     form.submit();
   }
 });
@@ -365,7 +379,7 @@ var HASHTAGS_TRUE = '';
 
 // Не закрывать форму по escape если фокус в поле hashtag
 hashTagsInput.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === window.data.ESC_KEY_CODE) {
+  if (evt.keyCode === ESC_KEY_CODE) {
     evt.stopPropagation();
   }
 });

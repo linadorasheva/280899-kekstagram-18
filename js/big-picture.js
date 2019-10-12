@@ -4,6 +4,7 @@
 
   var WIDTH_IMG = '35px';
   var HEIGHT_IMG = '35px';
+  var QUANTITY_RENDER_COMMENTS = 5;
 
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
@@ -43,16 +44,22 @@
       num = evt.target.parentNode.getAttribute('data-num');
     }
 
-    var elementAr = window.load.comments[num];
+    var elementAr = window.load.responseArray[num].comments;
 
-    for (var i = 0; i < elementAr.length; i++) {
-      fragment.appendChild(createComment(elementAr[i]));
+    if (elementAr.length < 5) {
+      for (var i = 0; i < elementAr.length; i++) {
+        fragment.appendChild(createComment(elementAr[i]));
+      }
+    } else {
+      for (var j = 0; j < QUANTITY_RENDER_COMMENTS; j++) {
+        fragment.appendChild(createComment(elementAr[j]));
+      }
     }
 
     return fragment;
   };
 
-  var hiddenBlock = function (block) {
+  var hideBlock = function (block) {
     block.classList.add('visually-hidden');
   };
 
@@ -77,8 +84,9 @@
   var bigPictureOpen = function (evt) {
     bigPicture.classList.remove('hidden');
     createBigPicture(evt);
-    hiddenBlock(commentsCount);
-    hiddenBlock(commentsLoader);
+    hideBlock(commentsCount);
+    hideBlock(commentsLoader);
+    document.addEventListener('keydown', onEscPress);
   };
 
   // Открытие fullscreen - фото по enter
@@ -91,6 +99,7 @@
   // Функция закрытия fullscreen - фото по клику на крестик
   var bigPictureClose = function () {
     bigPicture.classList.add('hidden');
+    document.removeEventListener('keydown', onEscPress);
   };
 
   bigPictureCancel.addEventListener('click', function () {
@@ -103,7 +112,6 @@
       bigPictureClose();
     }
   };
-  document.addEventListener('keydown', onEscPress);
 
   // Запрет закрытия окна, если коммент в фокусе
   bigPictureComment.addEventListener('keydown', function (evt) {
@@ -113,7 +121,6 @@
   });
 
   window.bigPicture = {
-    // getComments: getComments,
     bigPictureOpen: bigPictureOpen,
     bigPictureClose: bigPictureClose,
     onEnterPress: onEnterPress,

@@ -21,6 +21,7 @@
   // Отрисовываем фото, загруженные с сервера (в случае успешно-обработанного запроса)
   var renderPictures = function (array) {
     var fragment = document.createDocumentFragment();
+    window.load.responseArray = array;
     for (var i = 0; i < array.length; i++) {
 
       fragment.appendChild(window.pictures.createPicture(i, array[i]));

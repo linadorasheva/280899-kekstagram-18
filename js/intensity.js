@@ -58,6 +58,33 @@
     }
   };
 
+  var setIntensity = function (coefficient) {
+    switch (true) {
+      case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
+        filterValue.value = coefficient * window.intensity.FILTER_VALUE.chrome;
+        window.formBlock.imgUpload.style.filter = 'grayscale(' + filterValue.value + ')';
+        break;
+      case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
+        filterValue.value = coefficient * window.intensity.FILTER_VALUE.sepia;
+        window.formBlock.imgUpload.style.filter = 'sepia(' + filterValue.value + ')';
+        break;
+      case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
+        filterValue.value = coefficient * window.intensity.FILTER_VALUE.marvin;
+        window.formBlock.imgUpload.style.filter = 'invert(' + filterValue.value + '%)';
+        break;
+      case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
+        filterValue.value = coefficient * window.intensity.FILTER_VALUE.phobos;
+        window.formBlock.imgUpload.style.filter = 'blur(' + filterValue.value + 'px)';
+        break;
+      case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
+        filterValue.value = coefficient * window.intensity.FILTER_VALUE.heat;
+        window.formBlock.imgUpload.style.filter = 'brightness(' + filterValue.value + ')';
+        break;
+
+      default: window.formBlock.imgUpload.style.filter = '';
+    }
+  };
+
   // Функция для установки интенсивности
   var changeIntensity = function () {
 
@@ -67,31 +94,7 @@
 
     // Находим коэффициэнт изменения интенсивности
     var coefficientFilter = window.data.getProportion(sliderPinPosition, sliderLineWidth);
-
-    switch (true) {
-      case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
-        filterValue.value = coefficientFilter * window.intensity.FILTER_VALUE.chrome;
-        window.formBlock.imgUpload.style.filter = 'grayscale(' + filterValue.value + ')';
-        break;
-      case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
-        filterValue.value = coefficientFilter * window.intensity.FILTER_VALUE.sepia;
-        window.formBlock.imgUpload.style.filter = 'sepia(' + filterValue.value + ')';
-        break;
-      case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
-        filterValue.value = coefficientFilter * window.intensity.FILTER_VALUE.marvin;
-        window.formBlock.imgUpload.style.filter = 'invert(' + filterValue.value + '%)';
-        break;
-      case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
-        filterValue.value = coefficientFilter * window.intensity.FILTER_VALUE.phobos;
-        window.formBlock.imgUpload.style.filter = 'blur(' + filterValue.value + 'px)';
-        break;
-      case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        filterValue.value = coefficientFilter * window.intensity.FILTER_VALUE.heat;
-        window.formBlock.imgUpload.style.filter = 'brightness(' + filterValue.value + ')';
-        break;
-
-      default: window.formBlock.imgUpload.style.filter = '';
-    }
+    setIntensity(coefficientFilter);
   };
 
   // Вешаем обработчик на каждый инпут-фильтр

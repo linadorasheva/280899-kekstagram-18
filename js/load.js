@@ -1,10 +1,11 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data';
+  var URL_LOAD = 'https://js.dump.academy/kekstagram/data';
+  var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
+
   var STATUS_OK = 200;
   var TIMEOUT = 10000;
-  var comments = [];
 
   var load = function (onSuccess, onError) {
 
@@ -15,9 +16,6 @@
     xhr.addEventListener('load', function (evt) {
       if (xhr.status === STATUS_OK) {
         onSuccess(xhr.response);
-        comments = xhr.response.forEach(function (element) {
-          comments.push(element.comments);
-        });
       } else {
         onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
         window.data.addListenersOnBtnsError(evt);
@@ -35,7 +33,7 @@
     });
 
     xhr.timeout = TIMEOUT;
-    xhr.open('GET', URL);
+    xhr.open('GET', URL_LOAD);
     xhr.send();
   };
 
@@ -51,29 +49,31 @@
         window.data.onSuccessAlert();
         window.data.addListenersOnBtnsSuccess();
       } else {
-        onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText, window.formBlock.uploadOverlayClose);
+        onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+        window.formBlock.uploadOverlayClose();
         window.data.addListenersOnBtnsError(evt);
       }
     });
 
     xhr.addEventListener('error', function (evt) {
-      onError('Произошла ошибка соединения', window.formBlock.uploadOverlayClose);
+      onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+      window.formBlock.uploadOverlayClose();
       window.data.addListenersOnBtnsError(evt);
     });
 
     xhr.addEventListener('timeout', function (evt) {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', window.formBlock.uploadOverlayClose);
+      onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+      window.formBlock.uploadOverlayClose();
       window.data.addListenersOnBtnsError(evt);
     });
 
     xhr.timeout = TIMEOUT;
-    xhr.open('POST', 'https://js.dump.academy/kekstagram');
+    xhr.open('POST', URL_UPLOAD);
     xhr.send(data);
   };
 
   window.load = {
     load: load,
-    upload: upload,
-    comments: comments
+    upload: upload
   };
 })();

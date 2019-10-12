@@ -31,7 +31,6 @@
     return evt.keyCode === window.data.ENTER_KEY_CODE;
   };
 
-
   var errorTemplate = document.querySelector('#error').content;
   var mainBlock = document.querySelector('main');
   var successTemplate = document.querySelector('#success').content;
@@ -44,12 +43,9 @@
   };
 
   // Сообщение при ошибочно-обработанном запросе
-  var onError = function (message, action) {
+  var onError = function (message) {
     mainBlock.appendChild(createAlert(errorTemplate));
     document.querySelector('.error__title').textContent = message;
-    if (action) {
-      action();
-    }
   };
 
   // Сообщение при успешном запросе
@@ -61,24 +57,17 @@
   var addListenersOnBtnsError = function () {
     var errorMessage = document.querySelector('.error');
 
+    var messageDelete = function (message) {
+      mainBlock.removeChild(message);
+      document.removeEventListener('keydown', onAlertClose);
+      message.removeEventListener('click', onAlertClose);
+    };
+
     var onAlertClose = function (evt) {
-      switch (true) {
-        case window.data.isEscPress(evt):
-          mainBlock.removeChild(errorMessage);
-          document.removeEventListener('keydown', onAlertClose);
-          errorMessage.removeEventListener('click', onAlertClose);
-          break;
-        case evt.target.className === 'error':
-          mainBlock.removeChild(errorMessage);
-          document.removeEventListener('keydown', onAlertClose);
-          errorMessage.removeEventListener('click', onAlertClose);
-          break;
-        case evt.target.className === 'error__button':
-          mainBlock.removeChild(errorMessage);
-          document.removeEventListener('keydown', onAlertClose);
-          errorMessage.removeEventListener('click', onAlertClose);
-          break;
-        default: evt.stopPropagation();
+      if (isEscPress(evt) || evt.target.className === 'error' || evt.target.className === 'error__button') {
+        messageDelete(errorMessage);
+      } else {
+        evt.stopPropagation();
       }
     };
 
@@ -90,24 +79,17 @@
   var addListenersOnBtnsSuccess = function () {
     var successMessage = document.querySelector('.success');
 
+    var messageDelete = function (message) {
+      mainBlock.removeChild(message);
+      document.removeEventListener('keydown', onAlertClose);
+      message.removeEventListener('click', onAlertClose);
+    };
+
     var onAlertClose = function (evt) {
-      switch (true) {
-        case isEscPress(evt):
-          mainBlock.removeChild(successMessage);
-          document.removeEventListener('keydown', onAlertClose);
-          successMessage.removeEventListener('click', onAlertClose);
-          break;
-        case evt.target.className === 'success':
-          mainBlock.removeChild(successMessage);
-          document.removeEventListener('keydown', onAlertClose);
-          successMessage.removeEventListener('click', onAlertClose);
-          break;
-        case evt.target.className === 'success__button':
-          mainBlock.removeChild(successMessage);
-          document.removeEventListener('keydown', onAlertClose);
-          successMessage.removeEventListener('click', onAlertClose);
-          break;
-        default: evt.stopPropagation();
+      if (isEscPress(evt) || evt.target.className === 'success' || evt.target.className === 'success__button') {
+        messageDelete(successMessage);
+      } else {
+        evt.stopPropagation();
       }
     };
 
