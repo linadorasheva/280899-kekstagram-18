@@ -9,6 +9,16 @@
   var MAX_TEGS = 5;
   var MAX_QUANTITY_SHARP_SYMBOL = 1;
 
+  var Hashtag = {
+    FIRST_CHARACTER: 'Хэш-тег начинается с символа # (решётка)',
+    MAX_LENGTH: 'Максимальная длина одного хэш-тега 20 символов, включая решётку',
+    MIN_LENGTH: 'Хеш-тег не может состоять только из одной решётки',
+    NO_SPACE: 'Хэш-теги разделяются пробелами',
+    REPEAT: 'Один и тот же хэш-тег не может быть использован дважды',
+    LENGTH: 'Нельзя указать больше пяти хэш-тегов',
+    TRUE: ''
+  }
+
   var HASHTAG_FIRST_CHARACTER = 'Хэш-тег начинается с символа # (решётка)';
   var HASHTAG_MAX_LENGTH = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
   var HASHTAG_MIN_LENGTH = 'Хеш-тег не может состоять только из одной решётки';
@@ -25,25 +35,25 @@
       var hashtag = hashtags[i];
       switch (true) {
         case hashtag[0] !== '#':
-          textError = HASHTAG_FIRST_CHARACTER;
+          textError = Hashtag.FIRST_CHARACTER;
           break;
         case hashtag.length === MIN_TEGS_LENGTH:
-          textError = HASHTAG_MIN_LENGTH;
+          textError = Hashtag.MIN_LENGTH;
           break;
         case hashtags.indexOf(hashtag) !== i:
-          textError = HASHTAG_REPEAT;
+          textError = Hashtag.REPEAT;
           break;
         case hashtags.length > MAX_TEGS:
-          textError = HASHTAGS_LENGTH;
+          textError = Hashtag.LENGTH;
           break;
         case hashtag.length > MAX_TEGS_LENGTH:
-          textError = HASHTAG_MAX_LENGTH;
+          textError = Hashtag.MAX_LENGTH;
           break;
         case hashtag.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
-          textError = HASHTAG_NO_SPACE;
+          textError = Hashtag.NO_SPACE;
           break;
         default:
-          textError = HASHTAGS_TRUE;
+          textError = Hashtag.TRUE;
       }
     }
 

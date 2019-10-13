@@ -1,8 +1,11 @@
 'use strict';
 
 (function () {
-  var ENTER_KEY_CODE = 13;
-  var ESC_KEY_CODE = 27;
+  var KeyCode = {
+    ENTER_KEY_CODE: 13,
+    ESC_KEY_CODE: 27
+  };
+
   var PERCENT = 100;
 
   var getRandomArrElement = function (arr) {
@@ -53,10 +56,7 @@
     mainBlock.appendChild(createAlert(successTemplate));
   };
 
-  // Обработчики на сообщение ошибки
-  var addListenersOnBtnsError = function () {
-    var errorMessage = document.querySelector('.error');
-
+  var destroyAll = function(message, state) {
     var messageDelete = function (message) {
       mainBlock.removeChild(message);
       document.removeEventListener('keydown', onAlertClose);
@@ -64,42 +64,33 @@
     };
 
     var onAlertClose = function (evt) {
-      if (isEscPress(evt) || evt.target.className === 'error' || evt.target.className === 'error__button') {
-        messageDelete(errorMessage);
+      if (isEscPress(evt) || evt.target.className === state || evt.target.className === state + '__button') {
+        messageDelete(message);
       } else {
         evt.stopPropagation();
       }
     };
-
-    errorMessage.addEventListener('click', onAlertClose);
+    message.addEventListener('click', onAlertClose);
     document.addEventListener('keydown', onAlertClose);
+  };
+
+  // Обработчики на сообщение ошибки
+  var addListenersOnBtnsError = function () {
+    var errorMessage = document.querySelector('.error');
+
+    destroyAll(errorMessage, 'error');
   };
 
   // Обработчики на сообщение успеха
   var addListenersOnBtnsSuccess = function () {
     var successMessage = document.querySelector('.success');
 
-    var messageDelete = function (message) {
-      mainBlock.removeChild(message);
-      document.removeEventListener('keydown', onAlertClose);
-      message.removeEventListener('click', onAlertClose);
-    };
-
-    var onAlertClose = function (evt) {
-      if (isEscPress(evt) || evt.target.className === 'success' || evt.target.className === 'success__button') {
-        messageDelete(successMessage);
-      } else {
-        evt.stopPropagation();
-      }
-    };
-
-    successMessage.addEventListener('click', onAlertClose);
-    document.addEventListener('keydown', onAlertClose);
+    destroyAll(successMessage, 'success');
   };
 
   window.data = {
-    ENTER_KEY_CODE: ENTER_KEY_CODE,
-    ESC_KEY_CODE: ESC_KEY_CODE,
+    ENTER_KEY_CODE: KeyCode.ENTER_KEY_CODE,
+    ESC_KEY_CODE: KeyCode.ESC_KEY_CODE,
     PERCENT: PERCENT,
     getRandomArrElement: getRandomArrElement,
     getRandomInteger: getRandomInteger,

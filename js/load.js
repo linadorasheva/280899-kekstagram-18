@@ -1,8 +1,10 @@
 'use strict';
 
 (function () {
-  var URL_LOAD = 'https://js.dump.academy/kekstagram/data';
-  var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
+  var Url = {
+    URL_LOAD:'https://js.dump.academy/kekstagram/data',
+    URL_UPLOAD: 'https://js.dump.academy/kekstagram'
+  };
 
   var STATUS_OK = 200;
   var TIMEOUT = 10000;
@@ -16,6 +18,8 @@
     xhr.addEventListener('load', function (evt) {
       if (xhr.status === STATUS_OK) {
         onSuccess(xhr.response);
+        window.load.responseArray = xhr.response;
+        document.querySelector('.img-filters').classList.remove('img-filters--inactive');
       } else {
         onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
         window.data.addListenersOnBtnsError(evt);
@@ -33,7 +37,7 @@
     });
 
     xhr.timeout = TIMEOUT;
-    xhr.open('GET', URL_LOAD);
+    xhr.open('GET', Url.URL_LOAD);
     xhr.send();
   };
 
@@ -68,7 +72,7 @@
     });
 
     xhr.timeout = TIMEOUT;
-    xhr.open('POST', URL_UPLOAD);
+    xhr.open('POST', Url.URL_UPLOAD);
     xhr.send(data);
   };
 
