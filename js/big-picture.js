@@ -4,7 +4,6 @@
 
   var WIDTH_IMG = '35px';
   var HEIGHT_IMG = '35px';
-  var QUANTITY_RENDER_COMMENTS = 5;
 
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
@@ -46,14 +45,13 @@
 
     var elementAr = window.load.responseArray[num].comments;
 
-    if (elementAr.length < QUANTITY_RENDER_COMMENTS) {
-      for (var i = 0; i < elementAr.length; i++) {
-        fragment.appendChild(createComment(elementAr[i]));
+    for (var i = 0; i < elementAr.length; i++) {
+      var comment = createComment(elementAr[i]);
+      if (i > 4) {
+        hideBlock(comment);
       }
-    } else {
-      for (var j = 0; j < QUANTITY_RENDER_COMMENTS; j++) {
-        fragment.appendChild(createComment(elementAr[j]));
-      }
+
+      fragment.appendChild(comment);
     }
 
     return fragment;
@@ -63,8 +61,31 @@
     block.classList.add('visually-hidden');
   };
 
+  var openBlock = function (block) {
+    block.classList.remove('visually-hidden');
+  };
+
+  var checkAvailability = function (evt, comments) {
+    var commentsLength = comments.length;
+    if (commentsLength <= 5) {
+      hideBlock(commentsCount);
+      hideBlock(commentsLoader);
+    } else {
+      openBlock(commentsLoader);
+      openBlock(commentsCount);
+    }
+  };
+
+  // var onDownloadMore = function(array) {
+  //   for(var i = 5; i < array.length; i++) {
+  //     array[i].classList.remove('visually-hidden');
+
+  //   }
+  // }
+
   // Функция создания fullscreen - фото
   var createBigPicture = function (evt) {
+    var comments = document.querySelectorAll('.social__comment');
     if (evt.target.tagName === 'A') {
       bigPicture.querySelector('img').src = evt.target.children[0].src;
       bigPicture.querySelector('.social__caption').textContent = evt.target.children[0].alt;
@@ -77,6 +98,12 @@
     bigPicture.querySelector('.social__comments').innerHTML = '';
 
     bigPicture.querySelector('.social__comments').appendChild(getArrayComments(evt));
+    checkAvailability(evt, comments);
+
+    // commentsLoader.addEventListener('click', function(){
+    //   onDownloadMore(comments);
+    // });
+
     return bigPicture;
   };
 
@@ -84,8 +111,7 @@
   var bigPictureOpen = function (evt) {
     bigPicture.classList.remove('hidden');
     createBigPicture(evt);
-    hideBlock(commentsCount);
-    hideBlock(commentsLoader);
+
     document.addEventListener('keydown', onEscPress);
   };
 
