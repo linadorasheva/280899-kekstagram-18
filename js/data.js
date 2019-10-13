@@ -56,8 +56,8 @@
     mainBlock.appendChild(createAlert(successTemplate));
   };
 
-  var destroyAll = function(message, state) {
-    var messageDelete = function (message) {
+  var destroyAll = function (message, state) {
+    var messageDelete = function () {
       mainBlock.removeChild(message);
       document.removeEventListener('keydown', onAlertClose);
       message.removeEventListener('click', onAlertClose);

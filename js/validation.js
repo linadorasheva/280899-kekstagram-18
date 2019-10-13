@@ -17,15 +17,7 @@
     REPEAT: 'Один и тот же хэш-тег не может быть использован дважды',
     LENGTH: 'Нельзя указать больше пяти хэш-тегов',
     TRUE: ''
-  }
-
-  var HASHTAG_FIRST_CHARACTER = 'Хэш-тег начинается с символа # (решётка)';
-  var HASHTAG_MAX_LENGTH = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
-  var HASHTAG_MIN_LENGTH = 'Хеш-тег не может состоять только из одной решётки';
-  var HASHTAG_NO_SPACE = 'Хэш-теги разделяются пробелами';
-  var HASHTAG_REPEAT = 'Один и тот же хэш-тег не может быть использован дважды';
-  var HASHTAGS_LENGTH = 'Нельзя указать больше пяти хэш-тегов';
-  var HASHTAGS_TRUE = '';
+  };
 
   var checkHashtags = function (target, value) {
     var hashtags = value.split(' ');

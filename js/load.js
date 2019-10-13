@@ -2,7 +2,7 @@
 
 (function () {
   var Url = {
-    URL_LOAD:'https://js.dump.academy/kekstagram/data',
+    URL_LOAD: 'https://js.dump.academy/kekstagram/data',
     URL_UPLOAD: 'https://js.dump.academy/kekstagram'
   };
 

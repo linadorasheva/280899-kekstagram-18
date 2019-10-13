@@ -20,9 +20,6 @@
 
   // Отрисовываем фото, загруженные с сервера (в случае успешно-обработанного запроса)
   window.renderPictures = function (array) {
-    // document.querySelector('.picture').forEach(function(element) {
-    //   element.remove()
-    // });
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < array.length; i++) {
@@ -32,7 +29,7 @@
     addListeners();
   };
 
-  window.load.load(renderPictures, window.data.onError);
+  window.load.load(window.renderPictures, window.data.onError);
 
 })();
 
