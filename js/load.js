@@ -1,35 +1,79 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data';
+  var URL_LOAD = 'https://js.dump.academy/kekstagram/data';
+  var URL_UPLOAD = 'https://js.dump.academy/kekstagram';
+
   var STATUS_OK = 200;
   var TIMEOUT = 10000;
 
-  window.load = function (onSuccess, onError) {
+  var load = function (onSuccess, onError) {
 
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
 
-    xhr.addEventListener('load', function () {
-
+    xhr.addEventListener('load', function (evt) {
       if (xhr.status === STATUS_OK) {
         onSuccess(xhr.response);
       } else {
         onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+        window.data.addListenersOnBtnsError(evt);
       }
     });
 
-    xhr.addEventListener('error', function () {
+    xhr.addEventListener('error', function (evt) {
       onError('Произошла ошибка соединения');
+      window.data.addListenersOnBtnsError(evt);
     });
 
-    xhr.addEventListener('timeout', function () {
+    xhr.addEventListener('timeout', function (evt) {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      window.data.addListenersOnBtnsError(evt);
     });
 
     xhr.timeout = TIMEOUT;
-    xhr.open('GET', URL);
+    xhr.open('GET', URL_LOAD);
     xhr.send();
+  };
+
+
+  var upload = function (data, onSuccess, onError) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('load', function (evt) {
+      if (xhr.status === STATUS_OK) {
+        onSuccess(window.formBlock.uploadOverlayClose);
+        window.data.onSuccessAlert();
+        window.data.addListenersOnBtnsSuccess();
+      } else {
+        onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+        window.formBlock.uploadOverlayClose();
+        window.data.addListenersOnBtnsError(evt);
+      }
+    });
+
+    xhr.addEventListener('error', function (evt) {
+      onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+      window.formBlock.uploadOverlayClose();
+      window.data.addListenersOnBtnsError(evt);
+    });
+
+    xhr.addEventListener('timeout', function (evt) {
+      onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
+      window.formBlock.uploadOverlayClose();
+      window.data.addListenersOnBtnsError(evt);
+    });
+
+    xhr.timeout = TIMEOUT;
+    xhr.open('POST', URL_UPLOAD);
+    xhr.send(data);
+  };
+
+  window.load = {
+    load: load,
+    upload: upload
   };
 })();

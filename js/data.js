@@ -31,6 +31,72 @@
     return evt.keyCode === window.data.ENTER_KEY_CODE;
   };
 
+  var errorTemplate = document.querySelector('#error').content;
+  var mainBlock = document.querySelector('main');
+  var successTemplate = document.querySelector('#success').content;
+
+  // Получаем сообщение об ошибке из шаблона
+  var createAlert = function (template) {
+    var element = template.cloneNode(true);
+
+    return element;
+  };
+
+  // Сообщение при ошибочно-обработанном запросе
+  var onError = function (message) {
+    mainBlock.appendChild(createAlert(errorTemplate));
+    document.querySelector('.error__title').textContent = message;
+  };
+
+  // Сообщение при успешном запросе
+  var onSuccessAlert = function () {
+    mainBlock.appendChild(createAlert(successTemplate));
+  };
+
+  // Обработчики на сообщение ошибки
+  var addListenersOnBtnsError = function () {
+    var errorMessage = document.querySelector('.error');
+
+    var messageDelete = function (message) {
+      mainBlock.removeChild(message);
+      document.removeEventListener('keydown', onAlertClose);
+      message.removeEventListener('click', onAlertClose);
+    };
+
+    var onAlertClose = function (evt) {
+      if (isEscPress(evt) || evt.target.className === 'error' || evt.target.className === 'error__button') {
+        messageDelete(errorMessage);
+      } else {
+        evt.stopPropagation();
+      }
+    };
+
+    errorMessage.addEventListener('click', onAlertClose);
+    document.addEventListener('keydown', onAlertClose);
+  };
+
+  // Обработчики на сообщение успеха
+  var addListenersOnBtnsSuccess = function () {
+    var successMessage = document.querySelector('.success');
+
+    var messageDelete = function (message) {
+      mainBlock.removeChild(message);
+      document.removeEventListener('keydown', onAlertClose);
+      message.removeEventListener('click', onAlertClose);
+    };
+
+    var onAlertClose = function (evt) {
+      if (isEscPress(evt) || evt.target.className === 'success' || evt.target.className === 'success__button') {
+        messageDelete(successMessage);
+      } else {
+        evt.stopPropagation();
+      }
+    };
+
+    successMessage.addEventListener('click', onAlertClose);
+    document.addEventListener('keydown', onAlertClose);
+  };
+
   window.data = {
     ENTER_KEY_CODE: ENTER_KEY_CODE,
     ESC_KEY_CODE: ESC_KEY_CODE,
@@ -39,6 +105,10 @@
     getRandomInteger: getRandomInteger,
     getProportion: getProportion,
     isEscPress: isEscPress,
-    isEnterPress: isEnterPress
+    isEnterPress: isEnterPress,
+    onError: onError,
+    addListenersOnBtnsSuccess: addListenersOnBtnsSuccess,
+    addListenersOnBtnsError: addListenersOnBtnsError,
+    onSuccessAlert: onSuccessAlert
   };
 })();

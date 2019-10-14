@@ -2,64 +2,15 @@
 
 (function () {
 
-  var MIN_COMMENTS = 1;
-  var MAX_COMMENTS = 10;
-  var MIN_PHOTO_AVATAR = 1;
-  var MAX_PHOTO_AVATAR = 6;
-  var MIN_QUANTITY_SENTENCE = 1;
-  var MAX_QUANTITY_SENTENCE = 2;
-
-  var MOCK_NAMES = [
-    'Шелдон',
-    'Говард',
-    'Леонард',
-    'Радж',
-    'Стюарт',
-    'Барри'
-  ];
-
-  var MOCK_COMMENTS = [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда  вы  делаете  фотографию,  хорошо  бы  убирать  палец  из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-  ];
-
   var WIDTH_IMG = '35px';
   var HEIGHT_IMG = '35px';
+  var QUANTITY_RENDER_COMMENTS = 5;
 
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
   var commentsCount = bigPicture.querySelector('.social__comment-count');
   var commentsLoader = bigPicture.querySelector('.comments-loader');
   var bigPictureComment = bigPicture.querySelector('.social__footer-text');
-
-  // Функция, генерирующая текст комментария
-  var getMessage = function () {
-    var messageArray = [];
-    for (var i = 0; i < window.data.getRandomInteger(MIN_QUANTITY_SENTENCE, MAX_QUANTITY_SENTENCE); i++) {
-      messageArray[i] = MOCK_COMMENTS[window.data.getRandomArrElement(MOCK_COMMENTS)];
-    }
-    var message = messageArray.join(' ');
-    return message;
-  };
-
-  // Функция, возвращающая массив объектов-комментариев к фото
-  var getComments = function () {
-    var comments = [];
-    var quantityComments = window.data.getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
-    for (var j = 0; j <= quantityComments; j++) {
-      comments[j] = {
-        avatar: 'img/avatar-' + window.data.getRandomInteger(MIN_PHOTO_AVATAR, MAX_PHOTO_AVATAR) + '.svg',
-        message: getMessage(),
-        name: MOCK_NAMES[window.data.getRandomArrElement(MOCK_NAMES)]
-      };
-    }
-
-    return comments;
-  };
 
   // Разметка одного комментария
   var createComment = function (arrayEl) {
@@ -83,15 +34,32 @@
   };
 
   // Массив комментариев
-  var getArrayComments = function (array) {
+  var getArrayComments = function (evt) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(createComment(array[i]));
+    var num;
+
+    if (evt.target.tagName === 'A') {
+      num = evt.target.getAttribute('data-num');
+    } else {
+      num = evt.target.parentNode.getAttribute('data-num');
     }
+
+    var elementAr = window.load.responseArray[num].comments;
+
+    if (elementAr.length < 5) {
+      for (var i = 0; i < elementAr.length; i++) {
+        fragment.appendChild(createComment(elementAr[i]));
+      }
+    } else {
+      for (var j = 0; j < QUANTITY_RENDER_COMMENTS; j++) {
+        fragment.appendChild(createComment(elementAr[j]));
+      }
+    }
+
     return fragment;
   };
 
-  var hiddenBlock = function (block) {
+  var hideBlock = function (block) {
     block.classList.add('visually-hidden');
   };
 
@@ -108,7 +76,7 @@
     bigPicture.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;
     bigPicture.querySelector('.social__comments').innerHTML = '';
 
-    bigPicture.querySelector('.social__comments').appendChild(getArrayComments(getComments()));
+    bigPicture.querySelector('.social__comments').appendChild(getArrayComments(evt));
     return bigPicture;
   };
 
@@ -116,8 +84,9 @@
   var bigPictureOpen = function (evt) {
     bigPicture.classList.remove('hidden');
     createBigPicture(evt);
-    hiddenBlock(commentsCount);
-    hiddenBlock(commentsLoader);
+    hideBlock(commentsCount);
+    hideBlock(commentsLoader);
+    document.addEventListener('keydown', onEscPress);
   };
 
   // Открытие fullscreen - фото по enter
@@ -130,6 +99,7 @@
   // Функция закрытия fullscreen - фото по клику на крестик
   var bigPictureClose = function () {
     bigPicture.classList.add('hidden');
+    document.removeEventListener('keydown', onEscPress);
   };
 
   bigPictureCancel.addEventListener('click', function () {
@@ -142,7 +112,6 @@
       bigPictureClose();
     }
   };
-  document.addEventListener('keydown', onEscPress);
 
   // Запрет закрытия окна, если коммент в фокусе
   bigPictureComment.addEventListener('keydown', function (evt) {
@@ -152,9 +121,9 @@
   });
 
   window.bigPicture = {
-    getComments: getComments,
     bigPictureOpen: bigPictureOpen,
     bigPictureClose: bigPictureClose,
-    onEnterPress: onEnterPress
+    onEnterPress: onEnterPress,
+    createBigPicture: createBigPicture
   };
 })();
