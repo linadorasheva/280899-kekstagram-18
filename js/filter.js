@@ -81,14 +81,13 @@
   };
 
   var renderSortingPictures = window.debounce(function (evt, elements, array) {
-    setStyleBtn(evt);
     deleteNode(elements);
     window.renderPictures(array);
   });
 
   imgFiltersForm.addEventListener('click', function (evt) {
     var pictures = document.querySelectorAll('.picture');
-
+    setStyleBtn(evt);
     switch (true) {
       case evt.target.id === 'filter-popular':
         renderSortingPictures(evt, pictures, window.load.responseArray);
