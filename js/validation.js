@@ -19,7 +19,7 @@
     TRUE: ''
   };
 
-  var checkHashtags = function (target, value) {
+  var checkHashtags = function (value) {
     var hashtags = value.split(' ');
     var textError = '';
 
@@ -48,15 +48,12 @@
           textError = Hashtag.TRUE;
       }
     }
-
-    return target.setCustomValidity(textError);
+    return(textError);
   };
 
-  hashTagsInput.addEventListener('change', function (evt) {
+  hashTagsInput.addEventListener('change', function () {
     var hashtagValue = hashTagsInput.value.trim().toLowerCase();
-    var target = evt.target;
-
-    checkHashtags(target, hashtagValue);
+    hashTagsInput.setCustomValidity(checkHashtags(hashtagValue));
   });
 
   // Не закрывать форму по escape если фокус в поле комментария
