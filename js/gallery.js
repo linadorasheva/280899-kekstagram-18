@@ -19,17 +19,17 @@
   };
 
   // Отрисовываем фото, загруженные с сервера (в случае успешно-обработанного запроса)
-  var renderPictures = function (array) {
+  window.renderPictures = function (array) {
     var fragment = document.createDocumentFragment();
-    window.load.responseArray = array;
-    for (var i = 0; i < array.length; i++) {
 
+    for (var i = 0; i < array.length; i++) {
       fragment.appendChild(window.pictures.createPicture(i, array[i]));
     }
     picturesBlock.appendChild(fragment);
     addListeners();
   };
 
-  window.load.load(renderPictures, window.data.onError);
+  window.load.load(window.renderPictures, window.data.onError);
+
 })();
 

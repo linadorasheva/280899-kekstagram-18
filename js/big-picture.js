@@ -46,7 +46,7 @@
 
     var elementAr = window.load.responseArray[num].comments;
 
-    if (elementAr.length < 5) {
+    if (elementAr.length < QUANTITY_RENDER_COMMENTS) {
       for (var i = 0; i < elementAr.length; i++) {
         fragment.appendChild(createComment(elementAr[i]));
       }
