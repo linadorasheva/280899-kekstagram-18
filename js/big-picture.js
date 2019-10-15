@@ -43,10 +43,10 @@
       num = evt.target.parentNode.getAttribute('data-num');
     }
 
-    var elementAr = window.load.responseArray[num].comments;
+    var arrayComments = window.load.responseArray[num].comments;
 
-    for (var i = 0; i < elementAr.length; i++) {
-      var comment = createComment(elementAr[i]);
+    for (var i = 0; i < arrayComments.length; i++) {
+      var comment = createComment(arrayComments[i]);
       if (i > 4) {
         hideBlock(comment);
       }
@@ -65,9 +65,10 @@
     block.classList.remove('visually-hidden');
   };
 
-  var checkAvailability = function (evt, comments) {
-    var commentsLength = comments.length;
+  var checkAvailability = function () {
+    var commentsLength = document.querySelectorAll('.social__comment').length;
     if (commentsLength <= 5) {
+      console.log(commentsLength);
       hideBlock(commentsCount);
       hideBlock(commentsLoader);
     } else {
@@ -76,16 +77,9 @@
     }
   };
 
-  // var onDownloadMore = function(array) {
-  //   for(var i = 5; i < array.length; i++) {
-  //     array[i].classList.remove('visually-hidden');
-
-  //   }
-  // }
-
   // Функция создания fullscreen - фото
   var createBigPicture = function (evt) {
-    var comments = document.querySelectorAll('.social__comment');
+    // var comments = document.querySelectorAll('.social__comment');
     if (evt.target.tagName === 'A') {
       bigPicture.querySelector('img').src = evt.target.children[0].src;
       bigPicture.querySelector('.social__caption').textContent = evt.target.children[0].alt;
@@ -98,11 +92,6 @@
     bigPicture.querySelector('.social__comments').innerHTML = '';
 
     bigPicture.querySelector('.social__comments').appendChild(getArrayComments(evt));
-    checkAvailability(evt, comments);
-
-    // commentsLoader.addEventListener('click', function(){
-    //   onDownloadMore(comments);
-    // });
 
     return bigPicture;
   };
@@ -111,7 +100,8 @@
   var bigPictureOpen = function (evt) {
     bigPicture.classList.remove('hidden');
     createBigPicture(evt);
-
+    // var comments = document.querySelectorAll('.social__comment');
+    checkAvailability();
     document.addEventListener('keydown', onEscPress);
   };
 
