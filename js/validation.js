@@ -26,7 +26,7 @@
     for (var i = 0; i < hashtags.length; i++) {
       var hashtag = hashtags[i];
       switch (true) {
-        case hashtag[0] !== '#':
+        case hashtag.length > 0 && hashtag[0] !== '#':
           textError = Hashtag.FIRST_CHARACTER;
           break;
         case hashtag.length === MIN_TEGS_LENGTH:
@@ -41,14 +41,14 @@
         case hashtag.length > MAX_TEGS_LENGTH:
           textError = Hashtag.MAX_LENGTH;
           break;
-        case hashtag.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
+        case hashtag.length > 0 && hashtag.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
           textError = Hashtag.NO_SPACE;
           break;
         default:
-          textError = Hashtag.TRUE;
+          hashtag = null;
       }
     }
-    return(textError);
+    return (textError);
   };
 
   hashTagsInput.addEventListener('change', function () {

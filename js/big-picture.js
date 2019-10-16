@@ -1,6 +1,18 @@
 'use strict';
 
 (function () {
+  var QUANTITY_OPEN_COMMENTS = 5;
+
+  var Slice = {
+    MIN: 0,
+    MAX: 5,
+    SRC: 21
+  };
+
+  var textToQuantityComments = {
+    'one': 'комментария',
+    'other': 'комментариев'
+  };
 
   var WIDTH_IMG = '35px';
   var HEIGHT_IMG = '35px';
@@ -32,31 +44,18 @@
     return elementLi;
   };
 
-  // Массив комментариев
-  var getArrayComments = function (evt) {
-    var fragment = document.createDocumentFragment();
-    var num;
+  // Массив комментариев для выбранной фото-миниатюры с сервера
+  var getServerComments = function (evt) {
+    var targetSrc = evt.target.src.slice(Slice.SRC);
 
-    if (evt.target.tagName === 'A') {
-      num = evt.target.getAttribute('data-num');
-    } else {
-      num = evt.target.parentNode.getAttribute('data-num');
-    }
+    var object = window.load.responseArray.filter(function (element) {
+      return element.url === targetSrc;
+    });
 
-    var arrayComments = window.load.responseArray[num].comments;
-
-    for (var i = 0; i < arrayComments.length; i++) {
-      var comment = createComment(arrayComments[i]);
-      if (i > 4) {
-        hideBlock(comment);
-      }
-
-      fragment.appendChild(comment);
-    }
-
-    return fragment;
+    return object[0].comments;
   };
 
+  // скрыть блок
   var hideBlock = function (block) {
     block.classList.add('visually-hidden');
   };
@@ -65,21 +64,64 @@
     block.classList.remove('visually-hidden');
   };
 
-  var checkAvailability = function () {
+  // Добавить комментарии во фрагмент
+  var addComments = function (array) {
+    var fragment = document.createDocumentFragment();
+
+    array.forEach(function (element, i) {
+      var comment = createComment(array[i]);
+
+      if (i >= QUANTITY_OPEN_COMMENTS) {
+        hideBlock(comment);
+      }
+
+      fragment.appendChild(comment);
+    });
+
+    return fragment;
+  };
+
+  var checkComments = function (flag) {
     var commentsLength = document.querySelectorAll('.social__comment').length;
-    if (commentsLength <= 5) {
-      console.log(commentsLength);
-      hideBlock(commentsCount);
+    if (commentsLength <= QUANTITY_OPEN_COMMENTS) {
       hideBlock(commentsLoader);
-    } else {
-      openBlock(commentsLoader);
-      openBlock(commentsCount);
     }
+
+    if (flag && flag.length === 0) {
+      hideBlock(commentsLoader);
+    }
+  };
+
+  var renderMoreComments = function () {
+    var commentsHiddenColl = bigPicture.querySelectorAll('.social__comment.visually-hidden');
+    var commentsHiddenArr = [];
+
+    [].forEach.call(commentsHiddenColl, function (element) {
+      commentsHiddenArr.push(element);
+    });
+
+    commentsHiddenArr.slice(Slice.MIN, Slice.MAX).forEach(function (element) {
+      openBlock(element);
+    });
+
+    checkComments(bigPicture.querySelectorAll('.social__comment.visually-hidden'));
+  };
+
+  var renderCommentsCount = function (evt) {
+    var countValue = '';
+    var openedComments = bigPicture.querySelectorAll('.social__comment:not(.visually-hidden)').length;
+
+    if (getServerComments(evt).length < 5 && getServerComments(evt).length === 1) {
+      countValue = openedComments + ' из ' + '<span class="comments-count">' + getServerComments(evt).length + '</span> ' + textToQuantityComments.one;
+    } else {
+      countValue = openedComments + ' из ' + '<span class="comments-count">' + getServerComments(evt).length + '</span>' + ' комментариев';
+    }
+
+    commentsCount.innerHTML = countValue;
   };
 
   // Функция создания fullscreen - фото
   var createBigPicture = function (evt) {
-    // var comments = document.querySelectorAll('.social__comment');
     if (evt.target.tagName === 'A') {
       bigPicture.querySelector('img').src = evt.target.children[0].src;
       bigPicture.querySelector('.social__caption').textContent = evt.target.children[0].alt;
@@ -91,7 +133,9 @@
     bigPicture.querySelector('.comments-count').textContent = evt.target.parentNode.querySelector('.picture__comments').textContent;
     bigPicture.querySelector('.social__comments').innerHTML = '';
 
-    bigPicture.querySelector('.social__comments').appendChild(getArrayComments(evt));
+    bigPicture.querySelector('.social__comments').appendChild(addComments(getServerComments(evt)));
+    bigPictureComment.value = '';
+    renderCommentsCount(evt);
 
     return bigPicture;
   };
@@ -100,9 +144,9 @@
   var bigPictureOpen = function (evt) {
     bigPicture.classList.remove('hidden');
     createBigPicture(evt);
-    // var comments = document.querySelectorAll('.social__comment');
-    checkAvailability();
+    checkComments();
     document.addEventListener('keydown', onEscPress);
+    commentsLoader.addEventListener('click', renderMoreComments);
   };
 
   // Открытие fullscreen - фото по enter
@@ -116,7 +160,9 @@
   var bigPictureClose = function () {
     bigPicture.classList.add('hidden');
     document.removeEventListener('keydown', onEscPress);
+    commentsLoader.removeEventListener('click', renderMoreComments);
   };
+
 
   bigPictureCancel.addEventListener('click', function () {
     bigPicture.classList.add('hidden');
