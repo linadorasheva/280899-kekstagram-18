@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var QUANTITY_OPEN_COMMENTS = 5;
+  var QUANTITY_OPENED_COMMENTS = 5;
 
   var Slice = {
     MIN: 0,
@@ -46,7 +46,7 @@
 
   // Массив комментариев для выбранной фото-миниатюры с сервера
   var getServerComments = function (evt) {
-    var targetSrc = evt.target.src.slice(Slice.SRC);
+    var targetSrc = evt.target.getAttribute('src');
 
     var object = window.load.responseArray.filter(function (element) {
       return element.url === targetSrc;
@@ -71,7 +71,7 @@
     array.forEach(function (element, i) {
       var comment = createComment(array[i]);
 
-      if (i >= QUANTITY_OPEN_COMMENTS) {
+      if (i >= QUANTITY_OPENED_COMMENTS) {
         hideBlock(comment);
       }
 
@@ -83,7 +83,7 @@
 
   var checkComments = function (flag) {
     var commentsLength = document.querySelectorAll('.social__comment').length;
-    if (commentsLength <= QUANTITY_OPEN_COMMENTS) {
+    if (commentsLength <= QUANTITY_OPENED_COMMENTS) {
       hideBlock(commentsLoader);
     }
 
@@ -111,7 +111,7 @@
     var countValue = '';
     var openedComments = bigPicture.querySelectorAll('.social__comment:not(.visually-hidden)').length;
 
-    if (getServerComments(evt).length < 5 && getServerComments(evt).length === 1) {
+    if (getServerComments(evt).length < QUANTITY_OPENED_COMMENTS && getServerComments(evt).length > 0) {
       countValue = openedComments + ' из ' + '<span class="comments-count">' + getServerComments(evt).length + '</span> ' + textToQuantityComments.one;
     } else {
       countValue = openedComments + ' из ' + '<span class="comments-count">' + getServerComments(evt).length + '</span>' + ' комментариев';
@@ -135,6 +135,7 @@
 
     bigPicture.querySelector('.social__comments').appendChild(addComments(getServerComments(evt)));
     bigPictureComment.value = '';
+    openBlock(commentsLoader);
     renderCommentsCount(evt);
 
     return bigPicture;

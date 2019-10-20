@@ -26,12 +26,12 @@
 
   // Закрыть по escape
   var isEscPress = function (evt) {
-    return evt.keyCode === window.data.ESC_KEY_CODE;
+    return evt.keyCode === KeyCode.ESC_KEY_CODE;
   };
 
   // Открыть по enter
   var isEnterPress = function (evt) {
-    return evt.keyCode === window.data.ENTER_KEY_CODE;
+    return evt.keyCode === KeyCode.ENTER_KEY_CODE;
   };
 
   var errorTemplate = document.querySelector('#error').content;
