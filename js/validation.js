@@ -45,7 +45,7 @@
           textError = Hashtag.NO_SPACE;
           break;
         default:
-          hashtag = Hashtag.TRUE;
+          textError = Hashtag.TRUE;
       }
     }
     return (textError);
