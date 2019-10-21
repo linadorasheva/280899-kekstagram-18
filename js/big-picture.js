@@ -5,8 +5,7 @@
 
   var Slice = {
     MIN: 0,
-    MAX: 5,
-    SRC: 21
+    MAX: 5
   };
 
   var textToQuantityComments = {
@@ -46,7 +45,7 @@
 
   // Массив комментариев для выбранной фото-миниатюры с сервера
   var getServerComments = function (evt) {
-    var targetSrc = evt.target.src.slice(Slice.SRC);
+    var targetSrc = evt.target.getAttribute('src');
 
     var object = window.load.responseArray.filter(function (element) {
       return element.url === targetSrc;
@@ -59,7 +58,7 @@
   var hideBlock = function (block) {
     block.classList.add('visually-hidden');
   };
-
+  // Открыть блок
   var openBlock = function (block) {
     block.classList.remove('visually-hidden');
   };
@@ -81,17 +80,19 @@
     return fragment;
   };
 
+  // Проверяем кол-во комментов и в зависимости от него скрываем кнопку "Загрузить еще"
   var checkComments = function (flag) {
     var commentsLength = document.querySelectorAll('.social__comment').length;
     if (commentsLength <= QUANTITY_OPEN_COMMENTS) {
       hideBlock(commentsLoader);
     }
-
+    // Проверяем остались ли не отображенные комменты, если их нет - скрываем кнопку "Загрузить еще"
     if (flag && flag.length === 0) {
       hideBlock(commentsLoader);
     }
   };
 
+  // Отрисовка дополнительных 5 комментов
   var renderMoreComments = function () {
     var commentsHiddenColl = bigPicture.querySelectorAll('.social__comment.visually-hidden');
     var commentsHiddenArr = [];
@@ -105,19 +106,12 @@
     });
 
     checkComments(bigPicture.querySelectorAll('.social__comment.visually-hidden'));
+    renderCommentsCount(bigPicture.querySelectorAll('.social__comment:not(.visually-hidden)').length, bigPicture.querySelectorAll('.social__comment').length);
   };
 
-  var renderCommentsCount = function (evt) {
-    var countValue = '';
-    var openedComments = bigPicture.querySelectorAll('.social__comment:not(.visually-hidden)').length;
-
-    if (getServerComments(evt).length < 5 && getServerComments(evt).length === 1) {
-      countValue = openedComments + ' из ' + '<span class="comments-count">' + getServerComments(evt).length + '</span> ' + textToQuantityComments.one;
-    } else {
-      countValue = openedComments + ' из ' + '<span class="comments-count">' + getServerComments(evt).length + '</span>' + ' комментариев';
-    }
-
-    commentsCount.innerHTML = countValue;
+  // Отрисовка счетчика количества открытых комментов из общего числа комментариев, загруженных с сервера
+  var renderCommentsCount = function (openedComments, allComments) {
+    commentsCount.innerHTML = openedComments + ' из ' + '<span class="comments-count">' + allComments + '</span> ' + ' комментариев';
   };
 
   // Функция создания fullscreen - фото
@@ -135,7 +129,8 @@
 
     bigPicture.querySelector('.social__comments').appendChild(addComments(getServerComments(evt)));
     bigPictureComment.value = '';
-    renderCommentsCount(evt);
+    renderCommentsCount(bigPicture.querySelectorAll('.social__comment:not(.visually-hidden)').length, bigPicture.querySelectorAll('.social__comment').length);
+    openBlock(commentsLoader);
 
     return bigPicture;
   };
@@ -143,6 +138,8 @@
   // Функция открытия fullscreen - фото
   var bigPictureOpen = function (evt) {
     bigPicture.classList.remove('hidden');
+    bigPictureCancel.addEventListener('click', onClickBtnClose);
+    bigPictureComment.addEventListener('keydown', onFieldFocus);
     createBigPicture(evt);
     checkComments();
     document.addEventListener('keydown', onEscPress);
@@ -158,15 +155,16 @@
 
   // Функция закрытия fullscreen - фото по клику на крестик
   var bigPictureClose = function () {
+    commentsLoader.removeEventListener('click', renderMoreComments);
+    bigPictureComment.removeEventListener('keydown', onFieldFocus);
     bigPicture.classList.add('hidden');
     document.removeEventListener('keydown', onEscPress);
-    commentsLoader.removeEventListener('click', renderMoreComments);
+    bigPictureCancel.removeEventListener('click', onClickBtnClose);
   };
 
-
-  bigPictureCancel.addEventListener('click', function () {
-    bigPicture.classList.add('hidden');
-  });
+  var onClickBtnClose = function () {
+    bigPictureClose();
+  };
 
   // Закрытие по нажатию escape
   var onEscPress = function (evt) {
@@ -176,11 +174,11 @@
   };
 
   // Запрет закрытия окна, если коммент в фокусе
-  bigPictureComment.addEventListener('keydown', function (evt) {
+  var onFieldFocus = function (evt) {
     if (window.data.isEscPress(evt)) {
       evt.stopPropagation();
     }
-  });
+  };
 
   window.bigPicture = {
     bigPictureOpen: bigPictureOpen,
