@@ -35,7 +35,7 @@
   var uploadOverlayOpen = function () {
     uploadOverlay.classList.remove('hidden');
     filterSlider.classList.add('hidden');
-    form.addEventListener('submit', onFormSubmit);
+    uploadSend.addEventListener('click', onFormSubmit);
     uploadSend.addEventListener('keydown', onSuccessUploadForm, window.data.onError);
     uploadClose.addEventListener('click', onClickBtnClose);
     document.addEventListener('keydown', onEscPress);
@@ -45,7 +45,7 @@
   // Закрыть оверлей редактора фото
   var uploadOverlayClose = function () {
     uploadOverlay.classList.add('hidden');
-    form.removeEventListener('submit', onFormSubmit);
+    uploadSend.removeEventListener('click', onFormSubmit);
     uploadSend.removeEventListener('keydown', onSuccessUploadForm, window.data.onError);
     uploadClose.removeEventListener('click', onClickBtnClose);
     document.removeEventListener('keydown', onEscPress);
@@ -68,15 +68,13 @@
   // Закрыть форму редактирования фото по клику на крестик
   var onClickBtnClose = function () {
     uploadOverlayClose();
-  }
+  };
 
   // Отправить форму по энтеру на кнопку "Опубликовать"
   var onSuccessUploadForm = function (evt) {
     if (window.data.isEnterPress(evt)) {
       evt.preventDefault();
-      window.load.upload(new FormData(form), function () {
-        uploadOverlayClose();
-      });
+      window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
     }
   };
 
@@ -84,7 +82,7 @@
   var onFormSubmit = function (evt) {
     evt.preventDefault();
     window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
-  }
+  };
 
   window.formBlock = {
     form: form,
