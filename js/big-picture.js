@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var QUANTITY_OPEN_COMMENTS = 5;
+  var QUANTITY_OPENED_COMMENTS = 5;
 
   var Slice = {
     MIN: 0,
@@ -70,7 +70,7 @@
     array.forEach(function (element, i) {
       var comment = createComment(array[i]);
 
-      if (i >= QUANTITY_OPEN_COMMENTS) {
+      if (i >= QUANTITY_OPENED_COMMENTS) {
         hideBlock(comment);
       }
 
@@ -83,7 +83,7 @@
   // Проверяем кол-во комментов и в зависимости от него скрываем кнопку "Загрузить еще"
   var checkComments = function (flag) {
     var commentsLength = document.querySelectorAll('.social__comment').length;
-    if (commentsLength <= QUANTITY_OPEN_COMMENTS) {
+    if (commentsLength <= QUANTITY_OPENED_COMMENTS) {
       hideBlock(commentsLoader);
     }
     // Проверяем остались ли не отображенные комменты, если их нет - скрываем кнопку "Загрузить еще"
@@ -129,6 +129,7 @@
 
     bigPicture.querySelector('.social__comments').appendChild(addComments(getServerComments(evt)));
     bigPictureComment.value = '';
+
     renderCommentsCount(bigPicture.querySelectorAll('.social__comment:not(.visually-hidden)').length, bigPicture.querySelectorAll('.social__comment').length);
     openBlock(commentsLoader);
 
