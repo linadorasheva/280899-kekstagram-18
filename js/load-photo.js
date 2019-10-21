@@ -5,6 +5,7 @@
   var fileChooser = document.querySelector('#upload-file');
   var photoBox = document.querySelector('.img-upload__preview').querySelector('img');
   var filterIconsColl = document.querySelectorAll('.effects__preview');
+
   var filterIconsArr = [];
 
   [].forEach.call(filterIconsColl, function (element) {
