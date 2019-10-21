@@ -8,11 +8,6 @@
     MAX: 5
   };
 
-  var textToQuantityComments = {
-    'one': 'комментария',
-    'other': 'комментариев'
-  };
-
   var WIDTH_IMG = '35px';
   var HEIGHT_IMG = '35px';
 
@@ -45,7 +40,7 @@
 
   // Массив комментариев для выбранной фото-миниатюры с сервера
   var getServerComments = function (evt) {
-    var targetSrc = evt.target.getAttribute('src');
+    var targetSrc = (evt.target.tagName === 'A') ? targetSrc = evt.target.children[0].getAttribute('src') : evt.target.getAttribute('src');
 
     var object = window.load.responseArray.filter(function (element) {
       return element.url === targetSrc;
