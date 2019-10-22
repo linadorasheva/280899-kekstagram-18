@@ -46,7 +46,7 @@
   };
 
   // Сообщение при ошибочно-обработанном запросе
-  var onError = function (message) {
+  var onErrorAlert = function (message) {
     mainBlock.appendChild(createAlert(errorTemplate));
     document.querySelector('.error__title').textContent = message;
   };
@@ -97,7 +97,7 @@
     getProportion: getProportion,
     isEscPress: isEscPress,
     isEnterPress: isEnterPress,
-    onError: onError,
+    onError: onErrorAlert,
     addListenersOnBtnsSuccess: addListenersOnBtnsSuccess,
     addListenersOnBtnsError: addListenersOnBtnsError,
     onSuccessAlert: onSuccessAlert
