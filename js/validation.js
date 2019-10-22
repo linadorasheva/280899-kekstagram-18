@@ -2,8 +2,8 @@
 
 (function () {
 
-  var uploadCommentField = window.formBlock.form.querySelector('.text__description');
-  var hashTagsInput = window.formBlock.form.querySelector('.text__hashtags');
+  var uploadCommentField = document.querySelector('.text__description');
+  var hashTagsInput = document.querySelector('.text__hashtags');
   var MAX_TEGS_LENGTH = 20;
   var MIN_TEGS_LENGTH = 1;
   var MAX_TEGS = 5;
@@ -48,11 +48,12 @@
           textError = Hashtag.TRUE;
       }
     }
-    return (textError);
+    return textError;
   };
 
   hashTagsInput.addEventListener('change', function () {
     var hashtagValue = hashTagsInput.value.trim().toLowerCase();
+    window.textErrorOnHashtag = checkHashtags(hashtagValue);
     hashTagsInput.setCustomValidity(checkHashtags(hashtagValue));
   });
 
