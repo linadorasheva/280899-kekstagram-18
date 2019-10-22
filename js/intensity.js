@@ -39,19 +39,19 @@
   var setDefaultFilterValue = function () {
     switch (true) {
       case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
-        window.formBlock.imgUpload.style.filter = 'grayscale(' + window.intensity.FILTER_VALUE.chrome + ')';
+        window.formBlock.imgUpload.style.filter = 'grayscale(' + FILTER_VALUE.chrome + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
-        window.formBlock.imgUpload.style.filter = 'sepia(' + window.intensity.FILTER_VALUE.sepia + ')';
+        window.formBlock.imgUpload.style.filter = 'sepia(' + FILTER_VALUE.sepia + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
-        window.formBlock.imgUpload.style.filter = 'invert(' + window.intensity.FILTER_VALUE.marvin + '%)';
+        window.formBlock.imgUpload.style.filter = 'invert(' + FILTER_VALUE.marvin + '%)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
-        window.formBlock.imgUpload.style.filter = 'blur(' + window.intensity.FILTER_VALUE.phobos + 'px)';
+        window.formBlock.imgUpload.style.filter = 'blur(' + FILTER_VALUE.phobos + 'px)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        window.formBlock.imgUpload.style.filter = 'brightness(' + window.intensity.FILTER_VALUE.heat + ')';
+        window.formBlock.imgUpload.style.filter = 'brightness(' + FILTER_VALUE.heat + ')';
         break;
 
       default: window.formBlock.imgUpload.style.filter = '';
@@ -61,23 +61,23 @@
   var setIntensity = function (coefficient) {
     switch (true) {
       case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.chrome;
+        filterValue.value = coefficient * FILTER_VALUE.chrome;
         window.formBlock.imgUpload.style.filter = 'grayscale(' + filterValue.value + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.sepia;
+        filterValue.value = coefficient * FILTER_VALUE.sepia;
         window.formBlock.imgUpload.style.filter = 'sepia(' + filterValue.value + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.marvin;
+        filterValue.value = coefficient * FILTER_VALUE.marvin;
         window.formBlock.imgUpload.style.filter = 'invert(' + filterValue.value + '%)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.phobos;
+        filterValue.value = coefficient * FILTER_VALUE.phobos;
         window.formBlock.imgUpload.style.filter = 'blur(' + filterValue.value + 'px)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.heat;
+        filterValue.value = coefficient * FILTER_VALUE.heat;
         window.formBlock.imgUpload.style.filter = 'brightness(' + filterValue.value + ')';
         break;
 
@@ -121,6 +121,7 @@
   window.intensity = {
     FILTER_VALUE: FILTER_VALUE,
 
-    changeIntensity: changeIntensity
+    changeIntensity: changeIntensity,
+    sliderDepth: sliderDepth
   };
 })();
