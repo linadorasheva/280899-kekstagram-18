@@ -36,7 +36,8 @@
       if (window.formBlock.sliderPin.offsetLeft <= 0) {
         window.formBlock.sliderPin.style.left = 0 + sliderPinRadius + 'px';
         window.intensity.sliderDepth.style.width = 0 + sliderPinRadius + 'px';
-      } else if (window.formBlock.sliderPin.offsetLeft + shift.x > window.formBlock.sliderLine.offsetWidth) {
+      }
+      if (window.formBlock.sliderPin.offsetLeft + shift.x > window.formBlock.sliderLine.offsetWidth) {
         window.formBlock.sliderPin.style.left = window.formBlock.sliderLine.offsetWidth - sliderPinRadius + 'px';
         window.intensity.sliderDepth.style.width = window.formBlock.sliderLine.offsetWidth - sliderPinRadius + 'px';
       }

@@ -47,6 +47,8 @@
         default:
           textError = Hashtag.TRUE;
       }
+
+
     }
     return textError;
   };

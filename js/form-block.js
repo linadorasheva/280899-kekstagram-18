@@ -36,7 +36,7 @@
     uploadOverlay.classList.remove('hidden');
     filterSlider.classList.add('hidden');
 
-    uploadSend.addEventListener('click', onSuccessUploadForm, window.data.onError);
+    uploadSend.addEventListener('click', onFormSuccessUpload, window.data.onError);
     uploadSend.addEventListener('keydown', onEnterPress, window.data.onError);
 
     uploadClose.addEventListener('click', onClickBtnClose);
@@ -48,7 +48,7 @@
   var uploadOverlayClose = function () {
     uploadOverlay.classList.add('hidden');
 
-    uploadSend.removeEventListener('click', onSuccessUploadForm, window.data.onError);
+    uploadSend.removeEventListener('click', onFormSuccessUpload, window.data.onError);
     uploadSend.removeEventListener('keydown', onEnterPress, window.data.onError);
 
     uploadClose.removeEventListener('click', onClickBtnClose);
@@ -77,12 +77,12 @@
   // Отправить форму по энтеру на кнопку "Опубликовать"
   var onEnterPress = function (evt) {
     if (window.data.isEnterPress(evt)) {
-      onSuccessUploadForm(evt);
+      onFormSuccessUpload(evt);
     }
   };
 
   // Отправить форму
-  var onSuccessUploadForm = function (evt) {
+  var onFormSuccessUpload = function (evt) {
     if (!window.textErrorOnHashtag) {
       evt.preventDefault();
       window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
