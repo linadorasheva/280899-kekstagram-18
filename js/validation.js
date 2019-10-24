@@ -23,39 +23,46 @@
     var hashtags = value.split(' ');
     var textError = '';
 
-    for (var i = 0; i < hashtags.length; i++) {
-      var hashtag = hashtags[i];
+    hashtags.forEach(function (element, i, array) {
       switch (true) {
-        case hashtag.length > 0 && hashtag[0] !== '#':
+        case element.length > 0 && element[0] !== '#':
           textError = Hashtag.FIRST_CHARACTER;
+          console.log(Hashtag.FIRST_CHARACTER);
           break;
-        case hashtag.length === MIN_TEGS_LENGTH:
+        case element.length === MIN_TEGS_LENGTH:
           textError = Hashtag.MIN_LENGTH;
+          console.log(Hashtag.MIN_LENGTH);
           break;
-        case hashtags.indexOf(hashtag) !== i:
+        case array.indexOf(element) !== i:
           textError = Hashtag.REPEAT;
+          console.log(Hashtag.REPEAT);
           break;
-        case hashtags.length > MAX_TEGS:
+        case array.length > MAX_TEGS:
           textError = Hashtag.LENGTH;
+          console.log(Hashtag.LENGTH);
           break;
-        case hashtag.length > MAX_TEGS_LENGTH:
+        case element.length > MAX_TEGS_LENGTH:
           textError = Hashtag.MAX_LENGTH;
+          console.log(Hashtag.MAX_LENGTH);
           break;
-        case hashtag.length > 0 && hashtag.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
+        case element.length > 0 && element.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
           textError = Hashtag.NO_SPACE;
+          console.log(Hashtag.NO_SPACE);
           break;
         default:
           textError = Hashtag.TRUE;
+          console.log('default');
       }
+    });
 
-
-    }
     return textError;
   };
 
   hashTagsInput.addEventListener('change', function () {
     var hashtagValue = hashTagsInput.value.trim().toLowerCase();
     window.textErrorOnHashtag = checkHashtags(hashtagValue);
+    console.log(checkHashtags(hashtagValue), ' - сообщение ошибки');
+    console.log(hashTagsInput.value, ' - хештеги');
     hashTagsInput.setCustomValidity(checkHashtags(hashtagValue));
   });
 
