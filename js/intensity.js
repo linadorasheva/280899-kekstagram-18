@@ -6,6 +6,7 @@
     SEPIA: 1,
     MARVIN: 100,
     PHOBOS: 3,
+    HEAT_MIN_VALUE: 1,
     HEAT: 3
   };
   var DEPTH_EFFECT_MAX = 100;
@@ -77,9 +78,7 @@
         window.formBlock.imgUpload.style.filter = 'blur(' + inputFilterValue.value + 'px)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        inputFilterValue.value = (coefficient * Filter_value.HEAT).toFixed(1);
-
-        console.log(coefficient, inputFilterValue.value);
+        inputFilterValue.value = coefficient * (Filter_value.HEAT - HEAT_MIN_VALUE) + HEAT_MIN_VALUE;
         window.formBlock.imgUpload.style.filter = 'brightness(' + inputFilterValue.value + ')';
         break;
 
