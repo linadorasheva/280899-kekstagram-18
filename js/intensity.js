@@ -1,13 +1,17 @@
 'use strict';
 
 (function () {
-  var Filter_value = {
-    CHROME: 1,
-    SEPIA: 1,
-    MARVIN: 100,
-    PHOBOS: 3,
+  var FilterValue = {
+    CHROME_MIN_VALUE: 0,
+    CHROME_MAX_VALUE: 1,
+    SEPIA_MIN_VALUE: 0,
+    SEPIA_MAX_VALUE: 1,
+    MARVIN_MIN_VALUE: 0,
+    MARVIN_MAX_VALUE: 100,
+    PHOBOS_MIN_VALUE: 0,
+    PHOBOS_MAX_VALUE: 3,
     HEAT_MIN_VALUE: 1,
-    HEAT: 3
+    HEAT_MAX_VALUE: 3
   };
   var DEPTH_EFFECT_MAX = 100;
   var DEFAULT_CLASS_PREFIX = 'effects__preview--';
@@ -40,19 +44,19 @@
   var setDefaultFilterValue = function () {
     switch (true) {
       case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
-        window.formBlock.imgUpload.style.filter = 'grayscale(' + Filter_value.CHROME + ')';
+        window.formBlock.imgUpload.style.filter = 'grayscale(' + FilterValue.CHROME_MAX_VALUE + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
-        window.formBlock.imgUpload.style.filter = 'sepia(' + Filter_value.SEPIA + ')';
+        window.formBlock.imgUpload.style.filter = 'sepia(' + FilterValue.SEPIA_MAX_VALUE + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
-        window.formBlock.imgUpload.style.filter = 'invert(' + Filter_value.MARVIN + '%)';
+        window.formBlock.imgUpload.style.filter = 'invert(' + FilterValue.MARVIN_MAX_VALUE + '%)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
-        window.formBlock.imgUpload.style.filter = 'blur(' + Filter_value.PHOBOS + 'px)';
+        window.formBlock.imgUpload.style.filter = 'blur(' + FilterValue.PHOBOS_MAX_VALUE + 'px)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        window.formBlock.imgUpload.style.filter = 'brightness(' + Filter_value.HEAT + ')';
+        window.formBlock.imgUpload.style.filter = 'brightness(' + FilterValue.HEAT_MAX_VALUE + ')';
         break;
 
       default: window.formBlock.imgUpload.style.filter = '';
@@ -62,23 +66,23 @@
   var setIntensity = function (coefficient) {
     switch (true) {
       case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
-        inputFilterValue.value = coefficient * Filter_value.CHROME;
+        inputFilterValue.value = coefficient * (FilterValue.CHROME_MAX_VALUE - FilterValue.CHROME_MIN_VALUE) + FilterValue.CHROME_MIN_VALUE;
         window.formBlock.imgUpload.style.filter = 'grayscale(' + inputFilterValue.value + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
-        inputFilterValue.value = coefficient * Filter_value.SEPIA;
+        inputFilterValue.value = coefficient * (FilterValue.SEPIA_MAX_VALUE - FilterValue.SEPIA_MIN_VALUE) + FilterValue.SEPIA_MIN_VALUE;
         window.formBlock.imgUpload.style.filter = 'sepia(' + inputFilterValue.value + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
-        inputFilterValue.value = coefficient * Filter_value.MARVIN;
+        inputFilterValue.value = coefficient * (FilterValue.MARVIN_MAX_VALUE - FilterValue.MARVIN_MIN_VALUE) + FilterValue.MARVIN_MIN_VALUE;
         window.formBlock.imgUpload.style.filter = 'invert(' + inputFilterValue.value + '%)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
-        inputFilterValue.value = coefficient * Filter_value.PHOBOS;
+        inputFilterValue.value = coefficient * (FilterValue.PHOBOS_MAX_VALUE - FilterValue.PHOBOS_MIN_VALUE) + FilterValue.PHOBOS_MIN_VALUE;
         window.formBlock.imgUpload.style.filter = 'blur(' + inputFilterValue.value + 'px)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        inputFilterValue.value = coefficient * (Filter_value.HEAT - HEAT_MIN_VALUE) + HEAT_MIN_VALUE;
+        inputFilterValue.value = coefficient * (FilterValue.HEAT_MAX_VALUE - FilterValue.HEAT_MIN_VALUE) + FilterValue.HEAT_MIN_VALUE;
         window.formBlock.imgUpload.style.filter = 'brightness(' + inputFilterValue.value + ')';
         break;
 

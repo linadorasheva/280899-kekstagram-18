@@ -90,11 +90,7 @@
   // Отрисовка дополнительных 5 комментов
   var renderMoreComments = function () {
     var commentsHiddenColl = bigPicture.querySelectorAll('.social__comment.visually-hidden');
-    var commentsHiddenArr = [];
-
-    [].forEach.call(commentsHiddenColl, function (element) {
-      commentsHiddenArr.push(element);
-    });
+    var commentsHiddenArr = Array.from(commentsHiddenColl);
 
     commentsHiddenArr.slice(Slice.MIN, Slice.MAX).forEach(function (element) {
       openBlock(element);

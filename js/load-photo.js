@@ -6,11 +6,7 @@
   var photoBox = document.querySelector('.img-upload__preview').querySelector('img');
   var filterIconsColl = document.querySelectorAll('.effects__preview');
 
-  var filterIconsArr = [];
-
-  [].forEach.call(filterIconsColl, function (element) {
-    filterIconsArr.push(element);
-  });
+  var filterIconsArr = Array.from(filterIconsColl);
 
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
@@ -27,9 +23,11 @@
 
         reader.addEventListener('load', function () {
           photoBox.src = reader.result;
-          for (var i = 0; i < filterIconsArr.length; i++) {
-            filterIconsArr[i].style.backgroundImage = 'url(' + reader.result + ')';
-          }
+          filterIconsArr.forEach(function (element) {
+            element.style.backgroundImage = 'url(' + reader.result + ')';
+          });
+
+
         });
 
         reader.readAsDataURL(file);
