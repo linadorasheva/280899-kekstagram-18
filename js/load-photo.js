@@ -8,6 +8,12 @@
 
   var filterIconsArr = Array.from(filterIconsColl);
 
+  var installBackground = function (value) {
+    filterIconsArr.forEach(function (element) {
+      element.style.backgroundImage = 'url(' + value + ')';
+    });
+  };
+
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
 
@@ -23,10 +29,8 @@
 
         reader.addEventListener('load', function () {
           photoBox.src = reader.result;
-          filterIconsArr.forEach(function (element) {
-            element.style.backgroundImage = 'url(' + reader.result + ')';
-          });
 
+          installBackground(reader.result);
 
         });
 
