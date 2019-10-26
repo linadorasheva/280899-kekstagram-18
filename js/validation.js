@@ -49,27 +49,45 @@
     return textErrors;
   };
 
-  hashTagsInput.addEventListener('change', function () {
+  var onHashtagChange = function () {
     var hashtagValue = hashTagsInput.value.trim().toLowerCase();
     window.validation.textErrorOnHashtag = checkHashtags(hashtagValue);
     hashTagsInput.setCustomValidity(checkHashtags(hashtagValue));
-  });
+  };
 
-  // Не закрывать форму по escape если фокус в поле комментария
-  uploadCommentField.addEventListener('keydown', function (evt) {
+  // Не закрывать форму по escape если фокус в поле
+  var onFieldFocus = function (evt) {
     if (window.data.isEscPress(evt)) {
       evt.stopPropagation();
     }
-  });
-
-  // Не закрывать форму по escape если фокус в поле hashtag
-  hashTagsInput.addEventListener('keydown', function (evt) {
-    if (window.data.isEscPress(evt)) {
-      evt.stopPropagation();
-    }
-  });
+  }
 
   window.validation = {
-    textErrorOnHashtag: Hashtag.TRUE
+    textErrorOnHashtag: Hashtag.TRUE,
+
+    hashTagsInputListenerChangeAdd: function () {
+      return hashTagsInput.addEventListener('change', onHashtagChange);
+    },
+
+    hashTagsInputListenerChangeRemove: function () {
+      return hashTagsInput.removeEventListener('change', onHashtagChange);
+    },
+
+    hashTagsInputListenerKeydownAdd: function () {
+      return hashTagsInput.addEventListener('keydown', onFieldFocus);
+    },
+
+    hashTagsInputListenerKeydownRemove: function () {
+      return hashTagsInput.removeEventListener('keydown', onFieldFocus);
+    },
+
+    uploadCommentFieldListenerKeydownAdd: function () {
+      return uploadCommentField.addEventListener('keydown', onFieldFocus);
+    },
+
+    uploadCommentFieldListenerKeydownRemove: function () {
+      return uploadCommentField.removeEventListener('keydown', onFieldFocus);
+    }
+
   };
 })();

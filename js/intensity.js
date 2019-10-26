@@ -103,26 +103,28 @@
   };
 
   // Вешаем обработчик на каждый инпут-фильтр
-  var installFilter = function (array) {
-    array.forEach(function (element) {
-      element.addEventListener('click', function (evt) {
-        window.formBlock.resetEffect();
-        setDefaultIntensity();
+  var onUploadBtnChange = function (evt) {
+    window.formBlock.resetEffect();
+    setDefaultIntensity();
 
-        // Добавляем фото класс, соответствующий выбранному фильтру
-        window.formBlock.imgUpload.classList.add(getClassName(evt));
-        setDefaultFilterValue();
-        filterHidden(evt);
-      });
-    });
+    // Добавляем фото класс, соответствующий выбранному фильтру
+    window.formBlock.imgUpload.classList.add(getClassName(evt));
+    setDefaultFilterValue();
+    filterHidden(evt);
   };
-
-  window.formBlock.uploadBtn.addEventListener('change', function (evt) {
-    installFilter(filterInputs, evt);
-  });
 
   window.intensity = {
     changeIntensity: changeIntensity,
-    sliderDepth: sliderDepth
+    sliderDepth: sliderDepth,
+    onFiltersListenersAdd: function () {
+      return filterInputs.forEach(function (element) {
+        element.addEventListener('click', onUploadBtnChange);
+      });
+    },
+    onFiltersListenersRemove: function () {
+      return filterInputs.forEach(function (element) {
+        element.removeEventListener('click', onUploadBtnChange);
+      });
+    }
   };
 })();

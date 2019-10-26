@@ -24,7 +24,19 @@
     }
   };
 
-  plus.addEventListener('click', onPlusPress);
-  minus.addEventListener('click', onMinusPress);
+  window.zoom = {
+    plusListenerAdd: function() {
+      return plus.addEventListener('click', onPlusPress);
+    },
+    plusListenerRemove: function() {
+      return plus.removeEventListener('click', onPlusPress);
+    },
+    minusListenerAdd: function() {
+      return minus.addEventListener('click', onMinusPress);
+    },
+    minusListenerRemove: function() {
+      return minus.removeEventListener('click', onMinusPress);
+    }
+  }
 
 })();

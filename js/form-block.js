@@ -36,6 +36,17 @@
     uploadOverlay.classList.remove('hidden');
     filterSlider.classList.add('hidden');
 
+    window.zoom.plusListenerAdd();
+    window.zoom.minusListenerAdd();
+
+    window.validation.hashTagsInputListenerChangeAdd();
+    window.validation.hashTagsInputListenerKeydownAdd();
+    window.validation.uploadCommentFieldListenerKeydownAdd();
+
+    window.intensity.onFiltersListenersAdd();
+
+    window.slider.sliderPinListenerAdd();
+
     uploadSend.addEventListener('click', onFormSuccessUpload, window.data.onError);
     uploadSend.addEventListener('keydown', onEnterPress, window.data.onError);
 
@@ -47,6 +58,17 @@
   // Закрыть оверлей редактора фото
   var uploadOverlayClose = function () {
     uploadOverlay.classList.add('hidden');
+
+    window.zoom.plusListenerRemove();
+    window.zoom.minusListenerRemove();
+
+    window.validation.hashTagsInputListenerChangeRemove();
+    window.validation.hashTagsInputListenerKeydownRemove();
+    window.validation.uploadCommentFieldListenerKeydownRemove();
+
+    window.intensity.onFiltersListenersRemove();
+
+    window.slider.sliderPinListenerRemove();
 
     uploadSend.removeEventListener('click', onFormSuccessUpload, window.data.onError);
     uploadSend.removeEventListener('keydown', onEnterPress, window.data.onError);

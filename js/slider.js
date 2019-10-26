@@ -3,10 +3,8 @@
 (function () {
 
   // Обработчик перемещения ползунка интенсивности эффекта
-  window.formBlock.sliderPin.addEventListener('mousedown', function (evt) {
-
+  var onSliderPinMouseDown = function (evt) {
     var sliderPinRadius = window.formBlock.sliderPin.offsetWidth / 2;
-
 
     evt.preventDefault();
 
@@ -56,6 +54,15 @@
 
     window.formBlock.form.addEventListener('mousemove', onMouseMove);
     window.formBlock.form.addEventListener('mouseup', onMouseUp);
+  };
 
-  });
+  window.slider = {
+    sliderPinListenerAdd: function () {
+      return window.formBlock.sliderPin.addEventListener('mousedown', onSliderPinMouseDown);
+    },
+    sliderPinListenerRemove: function () {
+      return window.formBlock.sliderPin.removeEventListener('mousedown', onSliderPinMouseDown);
+    }
+  };
+
 })();
