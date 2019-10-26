@@ -25,18 +25,18 @@
   };
 
   window.zoom = {
-    plusListenerAdd: function() {
+    plusListenerAdd: function () {
       return plus.addEventListener('click', onPlusPress);
     },
-    plusListenerRemove: function() {
+    plusListenerRemove: function () {
       return plus.removeEventListener('click', onPlusPress);
     },
-    minusListenerAdd: function() {
+    minusListenerAdd: function () {
       return minus.addEventListener('click', onMinusPress);
     },
-    minusListenerRemove: function() {
+    minusListenerRemove: function () {
       return minus.removeEventListener('click', onMinusPress);
     }
-  }
+  };
 
 })();

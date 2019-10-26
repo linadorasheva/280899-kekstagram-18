@@ -60,7 +60,7 @@
     if (window.data.isEscPress(evt)) {
       evt.stopPropagation();
     }
-  }
+  };
 
   window.validation = {
     textErrorOnHashtag: Hashtag.TRUE,
