@@ -21,48 +21,37 @@
 
   var checkHashtags = function (value) {
     var hashtags = value.split(' ');
-    var textError = '';
+    var textErrors = '';
 
     hashtags.forEach(function (element, i, array) {
       switch (true) {
         case element.length > 0 && element[0] !== '#':
-          textError = Hashtag.FIRST_CHARACTER;
-          console.log(Hashtag.FIRST_CHARACTER);
+          textErrors = Hashtag.FIRST_CHARACTER;
           break;
         case element.length === MIN_TEGS_LENGTH:
-          textError = Hashtag.MIN_LENGTH;
-          console.log(Hashtag.MIN_LENGTH);
+          textErrors = Hashtag.MIN_LENGTH;
           break;
         case array.indexOf(element) !== i:
-          textError = Hashtag.REPEAT;
-          console.log(Hashtag.REPEAT);
+          textErrors = Hashtag.REPEAT;
           break;
         case array.length > MAX_TEGS:
-          textError = Hashtag.LENGTH;
-          console.log(Hashtag.LENGTH);
+          textErrors = Hashtag.LENGTH;
           break;
         case element.length > MAX_TEGS_LENGTH:
-          textError = Hashtag.MAX_LENGTH;
-          console.log(Hashtag.MAX_LENGTH);
+          textErrors = Hashtag.MAX_LENGTH;
           break;
         case element.length > 0 && element.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
-          textError = Hashtag.NO_SPACE;
-          console.log(Hashtag.NO_SPACE);
+          textErrors = Hashtag.NO_SPACE;
           break;
-        default:
-          textError = Hashtag.TRUE;
-          console.log('default');
       }
     });
 
-    return textError;
+    return textErrors;
   };
 
   hashTagsInput.addEventListener('change', function () {
     var hashtagValue = hashTagsInput.value.trim().toLowerCase();
-    window.textErrorOnHashtag = checkHashtags(hashtagValue);
-    console.log(checkHashtags(hashtagValue), ' - сообщение ошибки');
-    console.log(hashTagsInput.value, ' - хештеги');
+    window.validation.textErrorOnHashtag = checkHashtags(hashtagValue);
     hashTagsInput.setCustomValidity(checkHashtags(hashtagValue));
   });
 
@@ -79,4 +68,8 @@
       evt.stopPropagation();
     }
   });
+
+  window.validation = {
+    textErrorOnHashtag: Hashtag.TRUE
+  };
 })();

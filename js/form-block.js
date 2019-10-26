@@ -83,7 +83,7 @@
 
   // Отправить форму
   var onFormSuccessUpload = function (evt) {
-    if (!window.textErrorOnHashtag) {
+    if (window.validation.textErrorOnHashtag.length === 0) {
       evt.preventDefault();
       window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
     }
