@@ -3,10 +3,8 @@
 (function () {
 
   // Обработчик перемещения ползунка интенсивности эффекта
-  window.formBlock.sliderPin.addEventListener('mousedown', function (evt) {
-
+  var onSliderPinMouseDown = function (evt) {
     var sliderPinRadius = window.formBlock.sliderPin.offsetWidth / 2;
-
 
     evt.preventDefault();
 
@@ -31,11 +29,15 @@
       };
 
       window.formBlock.sliderPin.style.left = window.formBlock.sliderPin.offsetLeft - shift.x + 'px';
+      window.intensity.sliderDepth.style.width = window.formBlock.sliderPin.offsetLeft - shift.x + 'px';
 
       if (window.formBlock.sliderPin.offsetLeft <= 0) {
         window.formBlock.sliderPin.style.left = 0 + sliderPinRadius + 'px';
-      } else if (window.formBlock.sliderPin.offsetLeft + shift.x > window.formBlock.sliderLine.offsetWidth) {
+        window.intensity.sliderDepth.style.width = 0 + sliderPinRadius + 'px';
+      }
+      if (window.formBlock.sliderPin.offsetLeft + shift.x > window.formBlock.sliderLine.offsetWidth) {
         window.formBlock.sliderPin.style.left = window.formBlock.sliderLine.offsetWidth - sliderPinRadius + 'px';
+        window.intensity.sliderDepth.style.width = window.formBlock.sliderLine.offsetWidth - sliderPinRadius + 'px';
       }
 
       // Функция для смены интенсивности фильтра
@@ -52,6 +54,19 @@
 
     window.formBlock.form.addEventListener('mousemove', onMouseMove);
     window.formBlock.form.addEventListener('mouseup', onMouseUp);
+  };
 
-  });
+  var sliderPinListenerAdd = function () {
+    return window.formBlock.sliderPin.addEventListener('mousedown', onSliderPinMouseDown);
+  };
+
+  var sliderPinListenerRemove = function () {
+    return window.formBlock.sliderPin.removeEventListener('mousedown', onSliderPinMouseDown);
+  };
+
+  window.slider = {
+    sliderPinListenerAdd: sliderPinListenerAdd,
+    sliderPinListenerRemove: sliderPinListenerRemove
+  };
+
 })();

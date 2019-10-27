@@ -24,7 +24,27 @@
     }
   };
 
-  plus.addEventListener('click', onPlusPress);
-  minus.addEventListener('click', onMinusPress);
+  var plusListenerAdd = function () {
+    return plus.addEventListener('click', onPlusPress);
+  };
+
+  var plusListenerRemove = function () {
+    return plus.removeEventListener('click', onPlusPress);
+  };
+
+  var minusListenerAdd = function () {
+    return minus.addEventListener('click', onMinusPress);
+  };
+
+  var minusListenerRemove = function () {
+    return minus.removeEventListener('click', onMinusPress);
+  };
+
+  window.zoom = {
+    plusListenerAdd: plusListenerAdd,
+    plusListenerRemove: plusListenerRemove,
+    minusListenerAdd: minusListenerAdd,
+    minusListenerRemove: minusListenerRemove
+  };
 
 })();

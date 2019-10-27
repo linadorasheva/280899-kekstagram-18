@@ -35,8 +35,21 @@
   var uploadOverlayOpen = function () {
     uploadOverlay.classList.remove('hidden');
     filterSlider.classList.add('hidden');
-    uploadSend.addEventListener('click', onFormSubmit);
-    uploadSend.addEventListener('keydown', onSuccessUploadForm, window.data.onError);
+
+    window.zoom.plusListenerAdd();
+    window.zoom.minusListenerAdd();
+
+    window.validation.hashTagsInputListenerChangeAdd();
+    window.validation.hashTagsInputListenerKeydownAdd();
+    window.validation.uploadCommentFieldListenerKeydownAdd();
+
+    window.intensity.onFiltersListenersAdd();
+
+    window.slider.sliderPinListenerAdd();
+
+    uploadSend.addEventListener('click', onFormSuccessUpload, window.data.onError);
+    uploadSend.addEventListener('keydown', onEnterPress, window.data.onError);
+
     uploadClose.addEventListener('click', onClickBtnClose);
     document.addEventListener('keydown', onEscPress);
     resetEffect();
@@ -45,8 +58,21 @@
   // Закрыть оверлей редактора фото
   var uploadOverlayClose = function () {
     uploadOverlay.classList.add('hidden');
-    uploadSend.removeEventListener('click', onFormSubmit);
-    uploadSend.removeEventListener('keydown', onSuccessUploadForm, window.data.onError);
+
+    window.zoom.plusListenerRemove();
+    window.zoom.minusListenerRemove();
+
+    window.validation.hashTagsInputListenerChangeRemove();
+    window.validation.hashTagsInputListenerKeydownRemove();
+    window.validation.uploadCommentFieldListenerKeydownRemove();
+
+    window.intensity.onFiltersListenersRemove();
+
+    window.slider.sliderPinListenerRemove();
+
+    uploadSend.removeEventListener('click', onFormSuccessUpload, window.data.onError);
+    uploadSend.removeEventListener('keydown', onEnterPress, window.data.onError);
+
     uploadClose.removeEventListener('click', onClickBtnClose);
     document.removeEventListener('keydown', onEscPress);
     uploadBtn.value = '';
@@ -71,17 +97,18 @@
   };
 
   // Отправить форму по энтеру на кнопку "Опубликовать"
-  var onSuccessUploadForm = function (evt) {
+  var onEnterPress = function (evt) {
     if (window.data.isEnterPress(evt)) {
-      evt.preventDefault();
-      window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
+      onFormSuccessUpload(evt);
     }
   };
 
-  // Отправить форму по сабмиту
-  var onFormSubmit = function (evt) {
-    evt.preventDefault();
-    window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
+  // Отправить форму
+  var onFormSuccessUpload = function (evt) {
+    if (window.validation.textErrorOnHashtag.length === 0) {
+      evt.preventDefault();
+      window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
+    }
   };
 
   window.formBlock = {

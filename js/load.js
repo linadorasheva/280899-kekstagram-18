@@ -49,7 +49,7 @@
 
     xhr.addEventListener('load', function (evt) {
       if (xhr.status === STATUS_OK) {
-        onSuccess(window.formBlock.uploadOverlayClose);
+        onSuccess();
         window.data.onSuccessAlert();
         window.data.addListenersOnBtnsSuccess();
       } else {

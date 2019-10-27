@@ -1,18 +1,23 @@
 'use strict';
 
 (function () {
-  var FILTER_VALUE = {
-    chrome: 1,
-    sepia: 1,
-    marvin: 100,
-    phobos: 3,
-    heat: 3
+  var FilterValue = {
+    CHROME_MIN_VALUE: 0,
+    CHROME_MAX_VALUE: 1,
+    SEPIA_MIN_VALUE: 0,
+    SEPIA_MAX_VALUE: 1,
+    MARVIN_MIN_VALUE: 0,
+    MARVIN_MAX_VALUE: 100,
+    PHOBOS_MIN_VALUE: 0,
+    PHOBOS_MAX_VALUE: 3,
+    HEAT_MIN_VALUE: 1,
+    HEAT_MAX_VALUE: 3
   };
   var DEPTH_EFFECT_MAX = 100;
   var DEFAULT_CLASS_PREFIX = 'effects__preview--';
   var filterInputs = window.formBlock.uploadOverlay.querySelectorAll('input[name="effect"]');
 
-  var filterValue = window.formBlock.form.querySelector('.effect-level__value');
+  var inputFilterValue = window.formBlock.form.querySelector('.effect-level__value');
   var sliderDepth = window.formBlock.sliderLine.querySelector('.effect-level__depth');
 
   // Функция, возвращающая название класса для редактируемого фото
@@ -32,26 +37,26 @@
   var setDefaultIntensity = function () {
     window.formBlock.sliderPin.style.left = DEPTH_EFFECT_MAX + '%';
     sliderDepth.style.width = DEPTH_EFFECT_MAX + '%';
-    filterValue.value = DEPTH_EFFECT_MAX;
+    inputFilterValue.value = DEPTH_EFFECT_MAX;
   };
 
   // Устанавливаем интенсивность по дефолту на максимальные значения
   var setDefaultFilterValue = function () {
     switch (true) {
       case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
-        window.formBlock.imgUpload.style.filter = 'grayscale(' + window.intensity.FILTER_VALUE.chrome + ')';
+        window.formBlock.imgUpload.style.filter = 'grayscale(' + FilterValue.CHROME_MAX_VALUE + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
-        window.formBlock.imgUpload.style.filter = 'sepia(' + window.intensity.FILTER_VALUE.sepia + ')';
+        window.formBlock.imgUpload.style.filter = 'sepia(' + FilterValue.SEPIA_MAX_VALUE + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
-        window.formBlock.imgUpload.style.filter = 'invert(' + window.intensity.FILTER_VALUE.marvin + '%)';
+        window.formBlock.imgUpload.style.filter = 'invert(' + FilterValue.MARVIN_MAX_VALUE + '%)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
-        window.formBlock.imgUpload.style.filter = 'blur(' + window.intensity.FILTER_VALUE.phobos + 'px)';
+        window.formBlock.imgUpload.style.filter = 'blur(' + FilterValue.PHOBOS_MAX_VALUE + 'px)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        window.formBlock.imgUpload.style.filter = 'brightness(' + window.intensity.FILTER_VALUE.heat + ')';
+        window.formBlock.imgUpload.style.filter = 'brightness(' + FilterValue.HEAT_MAX_VALUE + ')';
         break;
 
       default: window.formBlock.imgUpload.style.filter = '';
@@ -61,24 +66,24 @@
   var setIntensity = function (coefficient) {
     switch (true) {
       case window.formBlock.imgUpload.classList.contains('effects__preview--chrome'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.chrome;
-        window.formBlock.imgUpload.style.filter = 'grayscale(' + filterValue.value + ')';
+        inputFilterValue.value = coefficient * (FilterValue.CHROME_MAX_VALUE - FilterValue.CHROME_MIN_VALUE) + FilterValue.CHROME_MIN_VALUE;
+        window.formBlock.imgUpload.style.filter = 'grayscale(' + inputFilterValue.value + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--sepia'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.sepia;
-        window.formBlock.imgUpload.style.filter = 'sepia(' + filterValue.value + ')';
+        inputFilterValue.value = coefficient * (FilterValue.SEPIA_MAX_VALUE - FilterValue.SEPIA_MIN_VALUE) + FilterValue.SEPIA_MIN_VALUE;
+        window.formBlock.imgUpload.style.filter = 'sepia(' + inputFilterValue.value + ')';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--marvin'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.marvin;
-        window.formBlock.imgUpload.style.filter = 'invert(' + filterValue.value + '%)';
+        inputFilterValue.value = coefficient * (FilterValue.MARVIN_MAX_VALUE - FilterValue.MARVIN_MIN_VALUE) + FilterValue.MARVIN_MIN_VALUE;
+        window.formBlock.imgUpload.style.filter = 'invert(' + inputFilterValue.value + '%)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--phobos'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.phobos;
-        window.formBlock.imgUpload.style.filter = 'blur(' + filterValue.value + 'px)';
+        inputFilterValue.value = coefficient * (FilterValue.PHOBOS_MAX_VALUE - FilterValue.PHOBOS_MIN_VALUE) + FilterValue.PHOBOS_MIN_VALUE;
+        window.formBlock.imgUpload.style.filter = 'blur(' + inputFilterValue.value + 'px)';
         break;
       case window.formBlock.imgUpload.classList.contains('effects__preview--heat'):
-        filterValue.value = coefficient * window.intensity.FILTER_VALUE.heat;
-        window.formBlock.imgUpload.style.filter = 'brightness(' + filterValue.value + ')';
+        inputFilterValue.value = coefficient * (FilterValue.HEAT_MAX_VALUE - FilterValue.HEAT_MIN_VALUE) + FilterValue.HEAT_MIN_VALUE;
+        window.formBlock.imgUpload.style.filter = 'brightness(' + inputFilterValue.value + ')';
         break;
 
       default: window.formBlock.imgUpload.style.filter = '';
@@ -98,29 +103,32 @@
   };
 
   // Вешаем обработчик на каждый инпут-фильтр
-  var installFilter = function (array) {
-    for (var i = 0; i < array.length; i++) {
+  var onUploadBtnChange = function (evt) {
+    window.formBlock.resetEffect();
+    setDefaultIntensity();
 
-      // Вешаем обработчик для смены вида фильтра
-      array[i].addEventListener('click', function (evt) {
-        window.formBlock.resetEffect();
-        setDefaultIntensity();
-
-        // Добавляем фото класс, соответствующий выбранному фильтру
-        window.formBlock.imgUpload.classList.add(getClassName(evt));
-        setDefaultFilterValue();
-        filterHidden(evt);
-      });
-    }
+    // Добавляем фото класс, соответствующий выбранному фильтру
+    window.formBlock.imgUpload.classList.add(getClassName(evt));
+    setDefaultFilterValue();
+    filterHidden(evt);
   };
 
-  window.formBlock.uploadBtn.addEventListener('change', function (evt) {
-    installFilter(filterInputs, evt);
-  });
+  var onFiltersListenersAdd = function () {
+    return filterInputs.forEach(function (element) {
+      element.addEventListener('click', onUploadBtnChange);
+    });
+  };
+
+  var onFiltersListenersRemove = function () {
+    return filterInputs.forEach(function (element) {
+      element.removeEventListener('click', onUploadBtnChange);
+    });
+  };
 
   window.intensity = {
-    FILTER_VALUE: FILTER_VALUE,
-
-    changeIntensity: changeIntensity
+    changeIntensity: changeIntensity,
+    sliderDepth: sliderDepth,
+    onFiltersListenersAdd: onFiltersListenersAdd,
+    onFiltersListenersRemove: onFiltersListenersRemove
   };
 })();

@@ -2,8 +2,8 @@
 
 (function () {
 
-  var uploadCommentField = window.formBlock.form.querySelector('.text__description');
-  var hashTagsInput = window.formBlock.form.querySelector('.text__hashtags');
+  var uploadCommentField = document.querySelector('.text__description');
+  var hashTagsInput = document.querySelector('.text__hashtags');
   var MAX_TEGS_LENGTH = 20;
   var MIN_TEGS_LENGTH = 1;
   var MAX_TEGS = 5;
@@ -21,52 +21,85 @@
 
   var checkHashtags = function (value) {
     var hashtags = value.split(' ');
-    var textError = '';
+    var textErrors = '';
 
-    for (var i = 0; i < hashtags.length; i++) {
-      var hashtag = hashtags[i];
+    hashtags.forEach(function (element, i, array) {
       switch (true) {
-        case hashtag.length > 0 && hashtag[0] !== '#':
-          textError = Hashtag.FIRST_CHARACTER;
+        case element.length > 0 && element[0] !== '#':
+          textErrors = Hashtag.FIRST_CHARACTER;
           break;
-        case hashtag.length === MIN_TEGS_LENGTH:
-          textError = Hashtag.MIN_LENGTH;
+        case element.length === MIN_TEGS_LENGTH:
+          textErrors = Hashtag.MIN_LENGTH;
           break;
-        case hashtags.indexOf(hashtag) !== i:
-          textError = Hashtag.REPEAT;
+        case array.indexOf(element) !== i:
+          textErrors = Hashtag.REPEAT;
           break;
-        case hashtags.length > MAX_TEGS:
-          textError = Hashtag.LENGTH;
+        case array.length > MAX_TEGS:
+          textErrors = Hashtag.LENGTH;
           break;
-        case hashtag.length > MAX_TEGS_LENGTH:
-          textError = Hashtag.MAX_LENGTH;
+        case element.length > MAX_TEGS_LENGTH:
+          textErrors = Hashtag.MAX_LENGTH;
           break;
-        case hashtag.length > 0 && hashtag.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
-          textError = Hashtag.NO_SPACE;
+        case element.length > 0 && element.match(/#/g).length > MAX_QUANTITY_SHARP_SYMBOL:
+          textErrors = Hashtag.NO_SPACE;
           break;
-        default:
-          hashtag = Hashtag.TRUE;
       }
-    }
-    return (textError);
+    });
+
+    return textErrors;
   };
 
-  hashTagsInput.addEventListener('change', function () {
+  var onHashtagChange = function () {
     var hashtagValue = hashTagsInput.value.trim().toLowerCase();
+    window.validation.textErrorOnHashtag = checkHashtags(hashtagValue);
     hashTagsInput.setCustomValidity(checkHashtags(hashtagValue));
-  });
+  };
 
-  // Не закрывать форму по escape если фокус в поле комментария
-  uploadCommentField.addEventListener('keydown', function (evt) {
+  // Не закрывать форму по escape если фокус в поле
+  var onFieldFocus = function (evt) {
     if (window.data.isEscPress(evt)) {
       evt.stopPropagation();
     }
-  });
+  };
 
-  // Не закрывать форму по escape если фокус в поле hashtag
-  hashTagsInput.addEventListener('keydown', function (evt) {
-    if (window.data.isEscPress(evt)) {
-      evt.stopPropagation();
-    }
-  });
+  var hashTagsInputListenerChangeAdd = function () {
+    return hashTagsInput.addEventListener('change', onHashtagChange);
+  };
+
+  var hashTagsInputListenerChangeRemove = function () {
+    return hashTagsInput.removeEventListener('change', onHashtagChange);
+  };
+
+  var hashTagsInputListenerKeydownAdd = function () {
+    return hashTagsInput.addEventListener('keydown', onFieldFocus);
+  };
+
+  var hashTagsInputListenerKeydownRemove = function () {
+    return hashTagsInput.removeEventListener('keydown', onFieldFocus);
+  };
+
+  var uploadCommentFieldListenerKeydownAdd = function () {
+    return uploadCommentField.addEventListener('keydown', onFieldFocus);
+  };
+
+  var uploadCommentFieldListenerKeydownRemove = function () {
+    return uploadCommentField.removeEventListener('keydown', onFieldFocus);
+  };
+
+
+  window.validation = {
+    textErrorOnHashtag: Hashtag.TRUE,
+
+    hashTagsInputListenerChangeAdd: hashTagsInputListenerChangeAdd,
+
+    hashTagsInputListenerChangeRemove: hashTagsInputListenerChangeRemove,
+
+    hashTagsInputListenerKeydownAdd: hashTagsInputListenerKeydownAdd,
+
+    hashTagsInputListenerKeydownRemove: hashTagsInputListenerKeydownRemove,
+
+    uploadCommentFieldListenerKeydownAdd: uploadCommentFieldListenerKeydownAdd,
+
+    uploadCommentFieldListenerKeydownRemove: uploadCommentFieldListenerKeydownRemove
+  };
 })();

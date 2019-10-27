@@ -6,25 +6,27 @@
 
   var addListeners = function () {
     var picturesList = document.querySelectorAll('.picture');
-    for (var j = 0; j < picturesList.length; j++) {
-      picturesList[j].addEventListener('click', function (evt) {
+
+    picturesList.forEach(function (element) {
+      element.addEventListener('click', function (evt) {
         evt.preventDefault();
         if (evt.target.tagName === 'IMG') {
           window.bigPicture.bigPictureOpen(evt);
         }
       }, true);
 
-      picturesList[j].addEventListener('keydown', window.bigPicture.onEnterPress);
-    }
+      element.addEventListener('keydown', window.bigPicture.onEnterPress);
+    });
   };
 
   // Отрисовываем фото, загруженные с сервера (в случае успешно-обработанного запроса)
   window.renderPictures = function (array) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(window.pictures.createPicture(array[i]));
-    }
+    array.forEach(function (element) {
+      fragment.appendChild(window.pictures.createPicture(element));
+    });
+
     picturesBlock.appendChild(fragment);
     addListeners();
   };

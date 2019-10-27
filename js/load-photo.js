@@ -6,11 +6,13 @@
   var photoBox = document.querySelector('.img-upload__preview').querySelector('img');
   var filterIconsColl = document.querySelectorAll('.effects__preview');
 
-  var filterIconsArr = [];
+  var filterIconsArr = Array.from(filterIconsColl);
 
-  [].forEach.call(filterIconsColl, function (element) {
-    filterIconsArr.push(element);
-  });
+  var installBackground = function (value) {
+    filterIconsArr.forEach(function (element) {
+      element.style.backgroundImage = 'url(' + value + ')';
+    });
+  };
 
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
@@ -27,9 +29,9 @@
 
         reader.addEventListener('load', function () {
           photoBox.src = reader.result;
-          for (var i = 0; i < filterIconsArr.length; i++) {
-            filterIconsArr[i].style.backgroundImage = 'url(' + reader.result + ')';
-          }
+
+          installBackground(reader.result);
+
         });
 
         reader.readAsDataURL(file);

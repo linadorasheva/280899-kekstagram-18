@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var QUANTITY_RANDOM_PHOTOS = 10;
   var Color = {
     RED: '#ff4e4e',
     WHITE: '#ffffff',
@@ -25,7 +26,7 @@
       return arrayCopy;
     };
 
-    return shuffleArray(arrayCopy).slice(0, 10);
+    return shuffleArray(arrayCopy).slice(0, QUANTITY_RANDOM_PHOTOS);
   };
 
   // Сортировка - самые обсуждаемые
@@ -66,18 +67,18 @@
 
   // Стили для кнопок фильтра
   var setStyleBtn = function (evt) {
-    for (var i = 0; i < filterBtns.length; i++) {
-      filterBtns[i].style.backgroundColor = Color.BLACK;
-      filterBtns[i].style.color = Color.WHITE;
-    }
+    filterBtns.forEach(function (element) {
+      element.style.backgroundColor = Color.BLACK;
+      element.style.color = Color.WHITE;
+    });
     evt.target.style.backgroundColor = Color.WHITE;
     evt.target.style.color = Color.RED;
   };
 
   var deleteNode = function (elements) {
-    for (var j = 0; j < elements.length; j++) {
-      elements[j].remove();
-    }
+    elements.forEach(function (element) {
+      element.remove();
+    });
   };
 
   var renderSortingPictures = window.debounce(function (evt, elements, array) {
