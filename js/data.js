@@ -37,6 +37,8 @@
   var errorTemplate = document.querySelector('#error').content;
   var mainBlock = document.querySelector('main');
   var successTemplate = document.querySelector('#success').content;
+  var errorMessage;
+  var successMessage;
 
   // Получаем сообщение об ошибке из шаблона
   var createAlert = function (template) {
@@ -56,36 +58,59 @@
     mainBlock.appendChild(createAlert(successTemplate));
   };
 
-  var destroyAll = function (message, state) {
-    var messageDelete = function () {
-      mainBlock.removeChild(message);
-      document.removeEventListener('keydown', onAlertClose);
-      message.removeEventListener('click', onAlertClose);
-    };
+  var messageDelete = function (message, cb) {
+    document.removeEventListener('keydown', onOverlayKeydown);
+    message.removeEventListener('click', cb);
+    mainBlock.removeChild(message);
+  };
 
-    var onAlertClose = function (evt) {
-      if (isEscPress(evt) || evt.target.className === state || evt.target.className === state + '__button') {
-        messageDelete(message);
-      } else {
-        evt.stopPropagation();
-      }
-    };
-    message.addEventListener('click', onAlertClose);
-    document.addEventListener('keydown', onAlertClose);
+  var onOverlayClickSuccess = function (evt) {
+    if (evt.target.className === 'success' || evt.target.className === 'success__button') {
+      checkMessage();
+    }
+  };
+
+  var onOverlayClickError = function (evt) {
+    if (evt.target.className === 'error' || evt.target.className === 'error__button') {
+      checkMessage();
+    }
+  };
+
+  var onOverlayKeydown = function (evt) {
+    if (isEscPress(evt)) {
+      checkMessage();
+    }
+  };
+
+  var checkMessage = function () {
+    if (document.querySelector('.error')) {
+      errorMessage = document.querySelector('.error');
+      messageDelete(errorMessage, onOverlayClickError);
+    }
+
+    if (document.querySelector('.success')) {
+      successMessage = document.querySelector('.success');
+      messageDelete(successMessage, onOverlayClickSuccess);
+    }
+  };
+
+  var destroyAll = function (message, cb) {
+    message.addEventListener('click', cb);
+    document.addEventListener('keydown', onOverlayKeydown);
   };
 
   // Обработчики на сообщение ошибки
   var addListenersOnBtnsError = function () {
-    var errorMessage = document.querySelector('.error');
+    errorMessage = document.querySelector('.error');
 
-    destroyAll(errorMessage, 'error');
+    destroyAll(errorMessage, onOverlayClickError);
   };
 
   // Обработчики на сообщение успеха
   var addListenersOnBtnsSuccess = function () {
-    var successMessage = document.querySelector('.success');
+    successMessage = document.querySelector('.success');
 
-    destroyAll(successMessage, 'success');
+    destroyAll(successMessage, onOverlayClickSuccess);
   };
 
   window.data = {

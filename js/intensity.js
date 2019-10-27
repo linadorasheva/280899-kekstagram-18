@@ -113,18 +113,22 @@
     filterHidden(evt);
   };
 
+  var onFiltersListenersAdd = function () {
+    return filterInputs.forEach(function (element) {
+      element.addEventListener('click', onUploadBtnChange);
+    });
+  };
+
+  var onFiltersListenersRemove = function () {
+    return filterInputs.forEach(function (element) {
+      element.removeEventListener('click', onUploadBtnChange);
+    });
+  };
+
   window.intensity = {
     changeIntensity: changeIntensity,
     sliderDepth: sliderDepth,
-    onFiltersListenersAdd: function () {
-      return filterInputs.forEach(function (element) {
-        element.addEventListener('click', onUploadBtnChange);
-      });
-    },
-    onFiltersListenersRemove: function () {
-      return filterInputs.forEach(function (element) {
-        element.removeEventListener('click', onUploadBtnChange);
-      });
-    }
+    onFiltersListenersAdd: onFiltersListenersAdd,
+    onFiltersListenersRemove: onFiltersListenersRemove
   };
 })();

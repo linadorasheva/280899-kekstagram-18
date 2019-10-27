@@ -62,32 +62,44 @@
     }
   };
 
+  var hashTagsInputListenerChangeAdd = function () {
+    return hashTagsInput.addEventListener('change', onHashtagChange);
+  };
+
+  var hashTagsInputListenerChangeRemove = function () {
+    return hashTagsInput.removeEventListener('change', onHashtagChange);
+  };
+
+  var hashTagsInputListenerKeydownAdd = function () {
+    return hashTagsInput.addEventListener('keydown', onFieldFocus);
+  };
+
+  var hashTagsInputListenerKeydownRemove = function () {
+    return hashTagsInput.removeEventListener('keydown', onFieldFocus);
+  };
+
+  var uploadCommentFieldListenerKeydownAdd = function () {
+    return uploadCommentField.addEventListener('keydown', onFieldFocus);
+  };
+
+  var uploadCommentFieldListenerKeydownRemove = function () {
+    return uploadCommentField.removeEventListener('keydown', onFieldFocus);
+  };
+
+
   window.validation = {
     textErrorOnHashtag: Hashtag.TRUE,
 
-    hashTagsInputListenerChangeAdd: function () {
-      return hashTagsInput.addEventListener('change', onHashtagChange);
-    },
+    hashTagsInputListenerChangeAdd: hashTagsInputListenerChangeAdd,
 
-    hashTagsInputListenerChangeRemove: function () {
-      return hashTagsInput.removeEventListener('change', onHashtagChange);
-    },
+    hashTagsInputListenerChangeRemove: hashTagsInputListenerChangeRemove,
 
-    hashTagsInputListenerKeydownAdd: function () {
-      return hashTagsInput.addEventListener('keydown', onFieldFocus);
-    },
+    hashTagsInputListenerKeydownAdd: hashTagsInputListenerKeydownAdd,
 
-    hashTagsInputListenerKeydownRemove: function () {
-      return hashTagsInput.removeEventListener('keydown', onFieldFocus);
-    },
+    hashTagsInputListenerKeydownRemove: hashTagsInputListenerKeydownRemove,
 
-    uploadCommentFieldListenerKeydownAdd: function () {
-      return uploadCommentField.addEventListener('keydown', onFieldFocus);
-    },
+    uploadCommentFieldListenerKeydownAdd: uploadCommentFieldListenerKeydownAdd,
 
-    uploadCommentFieldListenerKeydownRemove: function () {
-      return uploadCommentField.removeEventListener('keydown', onFieldFocus);
-    }
-
+    uploadCommentFieldListenerKeydownRemove: uploadCommentFieldListenerKeydownRemove
   };
 })();

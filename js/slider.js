@@ -56,13 +56,17 @@
     window.formBlock.form.addEventListener('mouseup', onMouseUp);
   };
 
+  var sliderPinListenerAdd = function () {
+    return window.formBlock.sliderPin.addEventListener('mousedown', onSliderPinMouseDown);
+  };
+
+  var sliderPinListenerRemove = function () {
+    return window.formBlock.sliderPin.removeEventListener('mousedown', onSliderPinMouseDown);
+  };
+
   window.slider = {
-    sliderPinListenerAdd: function () {
-      return window.formBlock.sliderPin.addEventListener('mousedown', onSliderPinMouseDown);
-    },
-    sliderPinListenerRemove: function () {
-      return window.formBlock.sliderPin.removeEventListener('mousedown', onSliderPinMouseDown);
-    }
+    sliderPinListenerAdd: sliderPinListenerAdd,
+    sliderPinListenerRemove: sliderPinListenerRemove
   };
 
 })();
