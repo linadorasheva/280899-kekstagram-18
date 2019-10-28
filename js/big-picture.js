@@ -2,14 +2,13 @@
 
 (function () {
   var QUANTITY_OPENED_COMMENTS = 5;
+  var WIDTH_IMG = '35px';
+  var HEIGHT_IMG = '35px';
 
   var Slice = {
     MIN: 0,
     MAX: 5
   };
-
-  var WIDTH_IMG = '35px';
-  var HEIGHT_IMG = '35px';
 
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');

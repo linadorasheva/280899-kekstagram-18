@@ -31,7 +31,7 @@
     addListeners();
   };
 
-  window.load.load(window.renderPictures, window.data.onError);
+  window.load.makeRequest(false, window.load.Url.URL_LOAD, 'GET', window.renderPictures, window.data.onError);
 
 })();
 

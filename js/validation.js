@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-
-  var uploadCommentField = document.querySelector('.text__description');
-  var hashTagsInput = document.querySelector('.text__hashtags');
   var MAX_TEGS_LENGTH = 20;
   var MIN_TEGS_LENGTH = 1;
   var MAX_TEGS = 5;
@@ -19,8 +16,14 @@
     TRUE: ''
   };
 
+  var uploadCommentField = document.querySelector('.text__description');
+  var hashTagsInput = document.querySelector('.text__hashtags');
+
   var checkHashtags = function (value) {
-    var hashtags = value.split(' ');
+    var hashtags = value.split(' ').filter(function (element) {
+      return element.length !== 0;
+    });;
+
     var textErrors = '';
 
     hashtags.forEach(function (element, i, array) {

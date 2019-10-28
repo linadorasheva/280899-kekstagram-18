@@ -107,7 +107,7 @@
   var onFormSuccessUpload = function (evt) {
     if (window.validation.textErrorOnHashtag.length === 0) {
       evt.preventDefault();
-      window.load.upload(new FormData(form), uploadOverlayClose, window.data.onError);
+      window.load.makeRequest(true, window.load.Url.URL_UPLOAD, 'POST', uploadOverlayClose, window.data.onError, new FormData(form));
     }
   };
 
