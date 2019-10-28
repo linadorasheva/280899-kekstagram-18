@@ -31,7 +31,7 @@
   };
 
   var minusListenerAdd = function () {
-    return minus.addEventListener('click',onBtnSizeClick);
+    return minus.addEventListener('click', onBtnSizeClick);
   };
 
   var minusListenerRemove = function () {

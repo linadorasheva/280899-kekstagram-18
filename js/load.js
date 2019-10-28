@@ -18,11 +18,9 @@
       if (xhr.status === STATUS_OK) {
         onSuccess(xhr.response);
         if (flag) {
-          console.log(true);
           window.data.onSuccessAlert();
           window.data.addListenersOnBtnsSuccess();
         } else {
-          console.log(false);
           window.load.responseArray = xhr.response;
           document.querySelector('.img-filters').classList.remove('img-filters--inactive');
         }
@@ -56,7 +54,7 @@
     if (data) {
       xhr.send(data);
     } else {
-      xhr.send()
+      xhr.send();
     }
   };
 

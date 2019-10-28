@@ -22,7 +22,7 @@
   var checkHashtags = function (value) {
     var hashtags = value.split(' ').filter(function (element) {
       return element.length !== 0;
-    });;
+    });
 
     var textErrors = '';
 
