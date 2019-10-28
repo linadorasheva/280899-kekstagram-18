@@ -1,12 +1,17 @@
 'use strict';
 
 (function () {
+  var PERCENT = 100;
   var KeyCode = {
     ENTER_KEY_CODE: 13,
     ESC_KEY_CODE: 27
   };
 
-  var PERCENT = 100;
+  var errorTemplate = document.querySelector('#error').content;
+  var mainBlock = document.querySelector('main');
+  var successTemplate = document.querySelector('#success').content;
+  var errorMessage;
+  var successMessage;
 
   var getRandomArrElement = function (arr) {
     var randomArrElement = Math.floor(Math.random() * arr.length);
@@ -33,12 +38,6 @@
   var isEnterPress = function (evt) {
     return evt.keyCode === KeyCode.ENTER_KEY_CODE;
   };
-
-  var errorTemplate = document.querySelector('#error').content;
-  var mainBlock = document.querySelector('main');
-  var successTemplate = document.querySelector('#success').content;
-  var errorMessage;
-  var successMessage;
 
   // Получаем сообщение об ошибке из шаблона
   var createAlert = function (template) {

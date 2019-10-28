@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var DEPTH_EFFECT_MAX = 100;
+  var DEFAULT_CLASS_PREFIX = 'effects__preview--';
+
   var FilterValue = {
     CHROME_MIN_VALUE: 0,
     CHROME_MAX_VALUE: 1,
@@ -13,10 +16,7 @@
     HEAT_MIN_VALUE: 1,
     HEAT_MAX_VALUE: 3
   };
-  var DEPTH_EFFECT_MAX = 100;
-  var DEFAULT_CLASS_PREFIX = 'effects__preview--';
   var filterInputs = window.formBlock.uploadOverlay.querySelectorAll('input[name="effect"]');
-
   var inputFilterValue = window.formBlock.form.querySelector('.effect-level__value');
   var sliderDepth = window.formBlock.sliderLine.querySelector('.effect-level__depth');
 
