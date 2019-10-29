@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
   var fileChooser = document.querySelector('#upload-file');
   var photoBox = document.querySelector('.img-upload__preview').querySelector('img');
   var filterIconsColl = document.querySelectorAll('.effects__preview');
